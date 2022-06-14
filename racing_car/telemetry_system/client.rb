@@ -2,7 +2,7 @@ class TelemetryClient
   attr_reader :online_status
 
   DIAGNOSTIC_MESSAGE = "AT#UD"
-  
+
   def initialize
     @online_status = false
     @diagnostic_message_just_sent = false
