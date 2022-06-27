@@ -1,3 +1,1 @@
-class UserNotLoggedInException < StandardError
-
-end
+class UserNotLoggedInException < StandardError; end
