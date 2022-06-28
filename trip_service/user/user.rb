@@ -12,6 +12,10 @@ class User
     @friends << user
   end
 
+  def has_friend?(friend)
+    @friends.include?(friend)
+  end
+
   def add_trip(trip)
     @trips << trip
   end

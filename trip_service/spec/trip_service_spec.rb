@@ -19,9 +19,11 @@ RSpec.describe TripService do
       let(:logged_user) { instance_double(User) }
 
       it 'returns the users trips' do
-        user = instance_double(User)
+        user = User.new
         trip = instance_double(Trip)
-        allow(user).to receive(:get_friends).and_return([logged_user])
+
+        user.add_friend(logged_user)
+
         allow(TripDAO).to receive(:find_trips_by_user).with(user).and_return([trip])
 
         expect(trip_service.get_trip_by_user(user)).to eq([trip])
@@ -33,8 +35,7 @@ RSpec.describe TripService do
       let(:logged_user) { instance_double(User) }
 
       it 'returns no trips' do
-        user = instance_double(User)
-        allow(user).to receive(:get_friends).and_return([])
+        user = User.new
 
         expect(trip_service.get_trip_by_user(user)).to eq([])
       end
@@ -44,7 +45,7 @@ RSpec.describe TripService do
       let(:user_session) { instance_double(UserSession, get_logged_user: nil) }
 
       it 'raises a not logged in exception' do
-        user = instance_double(User)
+        user = User.new
 
         expect { trip_service.get_trip_by_user(user) }.to raise_error(UserNotLoggedInException)
       end
