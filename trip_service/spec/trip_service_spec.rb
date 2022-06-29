@@ -9,34 +9,32 @@ RSpec.describe TripService do
 
   describe '#get_trip_by_user' do
 
-    context 'when other user is logged in' do
-
-      it 'returns the users trips' do
-        user = User.new
-        other_user = User.new
+    context 'when logged in' do
+      it 'returns friends trips' do
+        friend = User.new
+        current_user = User.new
         trip = Trip.new
+        friend.add_friend(current_user)
+        friend.add_trip(trip)
 
-        user.add_friend(other_user)
-        allow(TripDAO).to receive(:find_trips_by_user).with(user).and_return([trip])
-
-        expect(trip_service.get_trip_by_user(user, other_user)).to eq([trip])
+        expect(trip_service.get_trip_by_user(friend, current_user)).to eq([trip])
       end
     end
 
-    context 'when other user is logged in but is not a friend' do
+    context 'when logged in but not a friend' do
       it 'returns no trips' do
-        user = User.new
-        other_user = User.new
+        current_user = User.new
+        friend = User.new
 
-        expect(trip_service.get_trip_by_user(user, other_user)).to eq([])
+        expect(trip_service.get_trip_by_user(friend, current_user)).to eq([])
       end
     end
 
-    context 'when other user is not logged in' do
+    context 'when not logged in' do
       it 'raises a not logged in exception' do
-        user = User.new
+        friend = User.new
 
-        expect { trip_service.get_trip_by_user(user, nil) }.to raise_error(UserNotLoggedInException)
+        expect { trip_service.get_trip_by_user(friend, nil) }.to raise_error(UserNotLoggedInException)
       end
     end
   end
