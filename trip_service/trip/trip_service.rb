@@ -7,10 +7,10 @@ require_relative '../еxceptions/dependend_class_call_during_unit_test_exception
 class TripService
   NO_TRIPS = []
 
-  def get_trip_by_user(user)
-    raise UserNotLoggedInException.new if logged_in_user.nil?
+  def get_trip_by_user(user, other_user)
+    raise UserNotLoggedInException.new if other_user.nil?
 
-    if user.has_friend?(logged_in_user)
+    if user.has_friend?(other_user)
       get_trips_for(user)
     else
       NO_TRIPS
@@ -18,10 +18,6 @@ class TripService
   end
 
   private
-
-  def logged_in_user
-    UserSession.get_instance.get_logged_user
-  end
 
   def get_trips_for(user)
     TripDAO.find_trips_by_user(user)
