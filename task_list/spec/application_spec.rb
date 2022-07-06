@@ -78,6 +78,19 @@ describe 'application' do
           ''
       )
 
+      execute('deadline 3 11/07/2022')
+      execute('deadline 4 11/07/2022')
+      execute('deadline 5 11/07/2022')
+      execute('deadline 6 11/07/2022')
+      execute('deadline 7 11/07/2022')
+      execute('deadline 8 11/07/2022')
+
+      execute('today')
+      read_lines(
+        'Tasks due today:',
+        '  [x] 1: Eat more donuts.',
+      )
+
       execute('quit')
     end
   end
