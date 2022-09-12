@@ -5,23 +5,23 @@ class ShoppingCart
     # @prices = []
     #
 
-    @price = 0
+    @prices = []
   end
 
   def add(price)
-    @price = price
+    @prices << price
   end
 
   def number_of_products
-    1
+    @prices.size
   end
 
   def calculate_total_price
-    @price
+    @prices.sum
   end
 
   def has_discount?
-    @price >= 100
+    @prices.sum >= 100
   end
 end
 
