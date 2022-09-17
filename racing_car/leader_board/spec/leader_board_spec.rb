@@ -39,8 +39,7 @@ describe LeaderBoard do
           {
             "Lewis Hamilton" => 61,
             "Nico Rosberg" => 58,
-            "Self Driving Car - ACME (1.2)" => 40,
-            "Self Driving Car - ACME (1.3)" => 15
+            "Self Driving Car - ACME (1.3)" => 55
           }
         )
       end
@@ -59,7 +58,7 @@ describe LeaderBoard do
     context "with self driving cars" do
       it "returns driver names ordered by most points" do
         expect(@sample_leader_board_2.driver_rankings).to eq(
-          ["Lewis Hamilton", "Nico Rosberg", "Self Driving Car - ACME (1.2)", "Self Driving Car - ACME (1.3)"]
+          ["Lewis Hamilton", "Nico Rosberg", "Self Driving Car - ACME (1.3)"]
         )
       end
     end

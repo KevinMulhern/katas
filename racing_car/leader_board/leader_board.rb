@@ -7,8 +7,7 @@ class LeaderBoard
     driver_points = {}
     @races.each do |race|
       race.results.each do |driver|
-        name = race.driver_name(driver)
-        driver_points[name] = driver_points.fetch(name, 0) + race.points(driver) 
+        driver_points[driver.name] = driver_points.fetch(driver.name, 0) + race.points(driver)
       end
     end
 
@@ -46,15 +45,11 @@ class Race
 
   def initialize(name, drivers)
     @name = name
-    @results = drivers
-    @driver_names = {}
-    @results.each do |driver|
-      @driver_names[driver] = driver.name
-    end
+    @drivers = drivers
   end
 
   def position(driver)
-    @results.index driver
+    @drivers.index driver
   end
 
   def points(driver)
@@ -62,10 +57,6 @@ class Race
   end
 
   def results
-    @results
+    @drivers
   end
-
-  def driver_name(driver)
-    @driver_names[driver]
-  end    
 end
