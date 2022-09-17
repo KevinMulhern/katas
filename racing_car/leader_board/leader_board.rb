@@ -4,35 +4,39 @@ class LeaderBoard
   end
 
   def driver_points
-    driver_points = {}
-    @races.each do |race|
-      race.results.each do |driver|
-        driver_points[driver.name] = driver_points.fetch(driver.name, 0) + race.points(driver)
-      end
+    drivers.each_with_object(Hash.new(0)) do |driver, hash|
+      hash[driver.name] = driver.points
     end
-
-    return driver_points
   end
 
   def driver_rankings
-    rankings = driver_points.sort_by{|name, points| points}.reverse
-    return rankings.collect{|name, points| name}
+    drivers.sort_by(&:points).map(&:name).reverse
+  end
+
+  private
+
+  def drivers
+    @races.flat_map(&:drivers).uniq
   end
 end
 
 class Driver
   attr_reader :name, :country
+  attr_accessor :points
+
   def initialize(name, country)
     @name = name
     @country = country
+    @points = 0
   end
 end
 
 class SelfDrivingCar
-  attr_accessor :algorithm_version
+  attr_accessor :algorithm_version, :points
   def initialize(algorithm_version, company)
     @algorithm_version = algorithm_version
     @company = company
+    @points = 0
   end
 
   def name
@@ -41,22 +45,12 @@ class SelfDrivingCar
 end
 
 class Race
-  @@points = [25, 18, 15]
+  POINTS = [25, 18, 15]
+
+  attr_reader :drivers
 
   def initialize(name, drivers)
     @name = name
-    @drivers = drivers
-  end
-
-  def position(driver)
-    @drivers.index driver
-  end
-
-  def points(driver)
-    @@points[position(driver)]
-  end
-
-  def results
-    @drivers
+    @drivers = drivers.each_with_index { |driver, index| driver.points += POINTS[index] }
   end
 end
