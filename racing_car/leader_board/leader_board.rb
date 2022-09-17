@@ -29,12 +29,15 @@ class Driver
   end
 end
 
-class SelfDrivingCar < Driver
+class SelfDrivingCar
   attr_accessor :algorithm_version
   def initialize(algorithm_version, company)
-    super
     @algorithm_version = algorithm_version
     @company = company
+  end
+
+  def name
+    "Self Driving Car - #{@company} (#{algorithm_version})"
   end
 end
 
@@ -46,11 +49,7 @@ class Race
     @results = drivers
     @driver_names = {}
     @results.each do |driver|
-      driver_name = driver.name
-      if driver.class == SelfDrivingCar
-        driver_name = "Self Driving Car - " + driver.country + " (" + driver.algorithm_version + ")";
-      end
-      @driver_names[driver] = driver_name
+      @driver_names[driver] = driver.name
     end
   end
 
