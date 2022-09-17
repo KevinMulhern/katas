@@ -17,16 +17,51 @@ describe LeaderBoard do
     @sample_leader_board_1 = LeaderBoard.new([@race_1, @race_2, @race_3])
     @sample_leader_board_2 = LeaderBoard.new([@race_4, @race_5, @race_6])
   end
-  
-  context "#winner" do
-    it "returns the driver with the most points" do
-      expect(@sample_leader_board_1.driver_rankings.first).to eq("Lewis Hamilton")
+
+  describe "#driver_points" do
+
+    context "with no self driving cars" do
+      it "returns all drivers and their points" do
+        expect(@sample_leader_board_1.driver_points).to eq(
+          {
+            "Lewis Hamilton" => 61,
+            "Nico Rosberg" => 58,
+            "Sebastian Vettel" => 55
+          }
+        )
+      end
+    end
+
+    context "with self driving cars" do
+      # this is a bug - self driving car should be the same driver, thier name should be updated.
+      it "returns all drivers and their points" do
+        expect(@sample_leader_board_2.driver_points).to eq(
+          {
+            "Lewis Hamilton" => 61,
+            "Nico Rosberg" => 58,
+            "Self Driving Car - ACME (1.2)" => 40,
+            "Self Driving Car - ACME (1.3)" => 15
+          }
+        )
+      end
     end
   end
 
-  context "#driver_points" do
-    it "returns the correct number of points for a driver" do
-      expect(@sample_leader_board_2.driver_points["Lewis Hamilton"]).to eq(18 + 18 + 25)
+  describe "#driver_rankings" do
+    context "with no self driving cars" do
+      it "returns driver names ordered by most points" do
+        expect(@sample_leader_board_1.driver_rankings).to eq(
+          ["Lewis Hamilton", "Nico Rosberg", "Sebastian Vettel"]
+        )
+      end
+    end
+
+    context "with self driving cars" do
+      it "returns driver names ordered by most points" do
+        expect(@sample_leader_board_2.driver_rankings).to eq(
+          ["Lewis Hamilton", "Nico Rosberg", "Self Driving Car - ACME (1.2)", "Self Driving Car - ACME (1.3)"]
+        )
+      end
     end
   end
 end
