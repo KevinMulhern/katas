@@ -1,219 +1,178 @@
+class Score
+  include Comparable
+
+  DEFAULT_CALLS = {
+    0 => "Love",
+    1 => "Fifteen",
+    2 => "Thirty",
+    3 => "Forty",
+  }
+
+  def self.for(value)
+    new(value, DEFAULT_CALLS.fetch(value, "Deuce"))
+  end
+
+  attr_reader :value, :call
+
+  def initialize(value, call)
+    @value = value
+    @call = call
+  end
+
+  def <=>(other)
+    value <=> other.value
+  end
+
+  def to_s
+    call
+  end
+
+  def three_or_above?
+    value >= 3
+  end
+end
+
+class Player
+
+  attr_reader :name, :score
+
+  def initialize(name)
+    @name = name
+    @score = Score.for(0)
+  end
+
+  def points
+    @score.value
+  end
+
+  def add_point
+    @score = Score.for(@score.value + 1)
+  end
+end
+
+class GameScore
+
+  def self.for(*args)
+    new(*args)
+  end
+
+  def initialize(players)
+    @first_player = players.first
+    @second_player = players.last
+    @players = players
+  end
+
+  def result
+    return draw_result if draw?
+    return "Advantage #{winning_player.name}" if advantage?
+    return "Win for #{winning_player.name}" if winner?
+    "#{first_player.score}-#{@second_player.score}"
+  end
+
+  private
+
+  attr_reader :first_player, :second_player, :players
+
+  def draw?
+    first_player.score == second_player.score
+  end
+
+  def draw_result
+    return "Deuce" if first_player.score.three_or_above?
+    "#{first_player.score}-All"
+  end
+
+  def advantage?
+    any_player_has_more_than_3_points? && points_difference == 1
+  end
+
+  def winner?
+    any_player_has_more_than_3_points? && points_difference > 1
+  end
+
+  def winning_player
+    players.max_by(&:points)
+  end
+
+  def points_difference
+    (first_player.points - second_player.points).abs
+  end
+
+  def any_player_has_more_than_3_points?
+    players.any? { |player| player.points >= 4 }
+  end
+end
+
+
 
 class TennisGame1
 
   def initialize(player1Name, player2Name)
-    @player1Name = player1Name
-    @player2Name = player2Name
-    @p1points = 0
-    @p2points = 0
+    @player_one = Player.new(player1Name)
+    @player_two = Player.new(player2Name)
   end
-        
+
   def won_point(playerName)
-    if playerName == "player1"
-      @p1points += 1
-    else
-      @p2points += 1
-    end
+    current_player = players.find { |player| player.name == playerName }
+
+    current_player.add_point
   end
-  
+
   def score
-    result = ""
-    tempScore=0
-    if (@p1points==@p2points)
-      result = {
-          0 => "Love-All",
-          1 => "Fifteen-All",
-          2 => "Thirty-All",
-      }.fetch(@p1points, "Deuce")
-    elsif (@p1points>=4 or @p2points>=4)
-      minusResult = @p1points-@p2points
-      if (minusResult==1)
-        result ="Advantage player1"
-      elsif (minusResult ==-1)
-        result ="Advantage player2"
-      elsif (minusResult>=2)
-        result = "Win for player1"
-      else
-        result ="Win for player2"
-      end
-    else
-      (1...3).each do |i|
-        if (i==1)
-          tempScore = @p1points
-        else
-          result+="-"
-          tempScore = @p2points
-        end
-        result += {
-            0 => "Love",
-            1 => "Fifteen",
-            2 => "Thirty",
-            3 => "Forty",
-        }[tempScore]
-      end
-    end
-    result
+    GameScore.for(players).result
+  end
+
+  private
+
+  def players
+    [@player_one, @player_two]
   end
 end
 
 class TennisGame2
+
   def initialize(player1Name, player2Name)
-    @player1Name = player1Name
-    @player2Name = player2Name
-    @p1points = 0
-    @p2points = 0
+    @player_one = Player.new(player1Name)
+    @player_two = Player.new(player2Name)
   end
-      
+
   def won_point(playerName)
-    if playerName == @player1Name
-      p1Score()
-    else
-      p2Score()
-    end
+    current_player = players.find { |player| player.name == playerName }
+
+    current_player.add_point
   end
 
   def score
-    result = ""
-    if (@p1points == @p2points and @p1points < 3)
-      if (@p1points==0)
-        result = "Love"
-      end
-      if (@p1points==1)
-        result = "Fifteen"
-      end
-      if (@p1points==2)
-        result = "Thirty"
-      end
-      result += "-All"
-    end
-    if (@p1points==@p2points and @p1points>2)
-        result = "Deuce"
-    end
-    
-    p1res = ""
-    p2res = ""
-    if (@p1points > 0 and @p2points==0)
-      if (@p1points==1)
-        p1res = "Fifteen"
-      end
-      if (@p1points==2)
-        p1res = "Thirty"
-      end
-      if (@p1points==3)
-        p1res = "Forty"
-      end
-      p2res = "Love"
-      result = p1res + "-" + p2res
-    end
-    if (@p2points > 0 and @p1points==0)
-      if (@p2points==1)
-        p2res = "Fifteen"
-      end
-      if (@p2points==2)
-        p2res = "Thirty"
-      end
-      if (@p2points==3)
-        p2res = "Forty"
-      end
-      
-      p1res = "Love"
-      result = p1res + "-" + p2res
-    end
-    
-    if (@p1points>@p2points and @p1points < 4)
-      if (@p1points==2)
-        p1res="Thirty"
-      end
-      if (@p1points==3)
-        p1res="Forty"
-      end
-      if (@p2points==1)
-        p2res="Fifteen"
-      end
-      if (@p2points==2)
-        p2res="Thirty"
-      end
-      result = p1res + "-" + p2res
-    end
-    if (@p2points>@p1points and @p2points < 4)
-      if (@p2points==2)
-        p2res="Thirty"
-      end
-      if (@p2points==3)
-        p2res="Forty"
-      end
-      if (@p1points==1)
-        p1res="Fifteen"
-      end
-      if (@p1points==2)
-        p1res="Thirty"
-      end
-      result = p1res + "-" + p2res
-    end
-    if (@p1points > @p2points and @p2points >= 3)
-      result = "Advantage " + @player1Name
-    end
-    if (@p2points > @p1points and @p1points >= 3)
-      result = "Advantage " + @player2Name
-    end
-    if (@p1points>=4 and @p2points>=0 and (@p1points-@p2points)>=2)
-      result = "Win for " + @player1Name
-    end
-    if (@p2points>=4 and @p1points>=0 and (@p2points-@p1points)>=2)
-      result = "Win for " + @player2Name
-    end
-    result
+    GameScore.for(players).result
   end
 
-  def setp1Score(number)
-    (0..number).each do |i|
-        p1Score()
-    end
-  end
+  private
 
-  def setp2Score(number)
-    (0..number).each do |i|
-      p2Score()
-    end
-  end
-
-  def p1Score
-    @p1points +=1
-  end
-  
-  def p2Score
-    @p2points +=1
+  def players
+    [@player_one, @player_two]
   end
 end
 
 class TennisGame3
+
   def initialize(player1Name, player2Name)
-    @p1N = player1Name
-    @p2N = player2Name
-    @p1 = 0
-    @p2 = 0
+    @player_one = Player.new(player1Name)
+    @player_two = Player.new(player2Name)
   end
-      
-  def won_point(n)
-    if n == @p1N
-        @p1 += 1
-    else
-        @p2 += 1
-    end
+
+  def won_point(playerName)
+    current_player = players.find { |player| player.name == playerName }
+
+    current_player.add_point
   end
-  
+
   def score
-    if (@p1 < 4 and @p2 < 4) and (@p1 + @p2 < 6)
-      p = ["Love", "Fifteen", "Thirty", "Forty"]
-      s = p[@p1]
-      @p1 == @p2 ? s + "-All" : s + "-" + p[@p2]
-    else
-      if (@p1 == @p2)
-        "Deuce"
-      else
-        s = @p1 > @p2 ? @p1N : @p2N
-        (@p1-@p2)*(@p1-@p2) == 1 ? "Advantage " + s : "Win for " + s
-      end
-    end
+    GameScore.for(players).result
+  end
+
+  private
+
+  def players
+    [@player_one, @player_two]
   end
 end
