@@ -1,19 +1,25 @@
 module Commands
   class Show
-    def initialize(output, tasks)
+    def initialize(output, projects)
       @output = output
-      @tasks = tasks
+      @projects = projects
     end
 
     def execute
-      @tasks.each do |project_name, project_tasks|
-        @output.puts project_name
-        project_tasks.each do |task|
-          @output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
+      projects.each do |name, tasks|
+        output.puts name
+
+        tasks.each do |task|
+          output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
         end
-        @output.puts
+
+        output.puts
       end
     end
+
+    private
+
+    attr_reader :output, :projects
 
   end
 end

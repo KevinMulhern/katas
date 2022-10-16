@@ -14,7 +14,7 @@ class TaskList
     @input = input
     @output = output
 
-    @tasks = {}
+    @projects = {}
   end
 
   def run
@@ -29,29 +29,25 @@ class TaskList
     end
   end
 
-private
+  private
 
   def execute(command_line)
     command, rest = command_line.split(/ /, 2)
-    case command
-    when 'show'
-      Commands::Show.new(@output, @tasks).execute
-    when 'add'
-      Commands::Add.new(@output, @tasks).execute(rest)
-    when 'check'
-      Commands::Check.new(@output, @tasks).execute(rest)
-    when 'uncheck'
-      Commands::Uncheck.new(@output, @tasks).execute(rest)
-    when 'help'
-      Commands::Help.new(@output).execute
-      help
-    else
-      error command
-    end
-  end
 
-  def error(command)
-    @output.printf("I don't know what the command \"%s\" is.\n", command)
+    case command
+      when 'show'
+        Commands::Show.new(@output, @projects).execute
+      when 'add'
+        Commands::Add.new(@output, @projects).execute(rest)
+      when 'check'
+        Commands::Check.new(@output, @projects).execute(rest)
+      when 'uncheck'
+        Commands::Uncheck.new(@output, @projects).execute(rest)
+      when 'help'
+        Commands::Help.new(@output).execute
+      else
+        @output.printf("I don't know what the command \"%s\" is.\n", command)
+    end
   end
 end
 
