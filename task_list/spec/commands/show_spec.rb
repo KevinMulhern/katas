@@ -8,9 +8,9 @@ RSpec.describe Commands::Show do
       it 'prints the tasks for the project' do
         output = StringIO.new
         projects = { 'test-project' => [Task.new(1, 'My Task', false)] }
-        show = Commands::Show.new(output, projects)
+        command = described_class.new(output: output, projects: projects)
 
-        show.execute
+        command.execute
 
         expect(output.string).to eq(
           <<~SHOW
@@ -31,9 +31,9 @@ RSpec.describe Commands::Show do
             Task.new(2, 'My Second Task', false),
           ]
         }
-        show = Commands::Show.new(output, projects)
+        command = described_class.new(output: output, projects: projects)
 
-        show.execute
+        command.execute
 
         expect(output.string).to eq(
           <<~SHOW

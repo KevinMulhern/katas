@@ -36,7 +36,7 @@ class TaskList
 
     case command
       when 'show'
-        Commands::Show.new(@output, @projects).execute
+        Commands::Show.execute(output: @output, projects: @projects)
       when 'add'
         Commands::Add.execute(output: @output, projects: @projects, params: rest)
       when 'check'

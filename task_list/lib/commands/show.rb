@@ -1,8 +1,12 @@
 module Commands
   class Show
-    def initialize(output, projects)
+    def initialize(output:, projects:)
       @output = output
       @projects = projects
+    end
+
+    def self.execute(**args)
+      new(**args).execute
     end
 
     def execute
