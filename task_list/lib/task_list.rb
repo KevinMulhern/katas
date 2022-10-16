@@ -42,9 +42,9 @@ class TaskList
       when 'check'
         Commands::Check.execute(output: @output, projects: @projects, task_id: rest)
       when 'uncheck'
-        Commands::Uncheck.new(@output, @projects).execute(rest)
+        Commands::Uncheck.execute(output: @output, projects: @projects, task_id: rest)
       when 'help'
-        Commands::Help.new(@output).execute
+        Commands::Help.execute(outputs: @output)
       else
         @output.printf("I don't know what the command \"%s\" is.\n", command)
     end
