@@ -1,20 +1,23 @@
 module Commands
   class Check
 
-    def initialize(output, projects)
+    def initialize(output:, projects:, task_id:)
       @output = output
       @projects = projects
+      @task_id = task_id.to_i
     end
 
-    def execute(id_string)
-      id = id_string.to_i
+    def self.execute(**args)
+      new(**args).execute
+    end
 
+    def execute
       task = @projects.collect { |_, tasks|
-        tasks.find { |t| t.id == id }
+        tasks.find { |t| t.id == task_id }
       }.reject(&:nil?).first
 
       if task.nil?
-        output.printf("Could not find a task with an ID of %d.\n", id)
+        output.printf("Could not find a task with an ID of %d.\n", task_id)
         return
       end
 
@@ -23,6 +26,6 @@ module Commands
 
     private
 
-    attr_reader :output, :projects
+    attr_reader :output, :projects, :task_id
   end
 end
