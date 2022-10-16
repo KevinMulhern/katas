@@ -1,6 +1,5 @@
 class Task
   attr_reader :id, :description
-  attr_accessor :done
 
   def initialize(id, description, done)
     @id = id
@@ -8,7 +7,15 @@ class Task
     @done = done
   end
 
+  def mark_done
+    @done = true
+  end
+
+  def mark_undone
+    @done = false
+  end
+
   def done?
-    done
+    @done
   end
 end

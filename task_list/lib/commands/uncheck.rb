@@ -17,7 +17,7 @@ module Commands
         return
       end
 
-      task.done = false
+      task.mark_undone
     end
 
     private
