@@ -4,56 +4,48 @@ RSpec.describe Commands::Add do
 
   describe '#execute' do
     context 'when adding a project' do
-      it 'adds the project to the tasks' do
-        projects = {}
-        add = Commands::Add.new(nil, projects)
 
-        add.execute('project test-project')
+      before do
+        allow(Commands::AddProject).to receive(:execute)
+      end
 
-        expect(projects).to eq('test-project' => [])
+      it 'delegates to the add project command' do
+        command = described_class.new(
+          projects: {},
+          output: nil,
+          params: 'project test-project'
+        )
+
+        command.execute
+
+        expect(Commands::AddProject).to have_received(:execute).with(
+          projects: {},
+          name: 'test-project'
+        )
       end
     end
 
     context 'when adding a task' do
-      it 'adds the task to the project' do
-        projects = { 'test-project' => [] }
-        add = Commands::Add.new(nil, projects)
-
-        add.execute('task test-project My Task')
-
-        expect(projects["test-project"].first.description).to eq('My Task')
+      before do
+        allow(Commands::AddTask).to receive(:execute)
       end
 
-      it 'assigns the task an ID' do
-        projects = { 'test-project' => [] }
-        add = Commands::Add.new(nil, projects)
+      it 'delegates to the add task command' do
+        output = double
+        command = described_class.new(
+          projects: {},
+          output: output,
+          params: 'task test-project My Task'
+        )
 
-        add.execute('task test-project My Task')
+        command.execute
 
-        expect(projects["test-project"].first.id).to eq(1)
-      end
-
-      it 'assigns incremental IDs' do
-        projects = { 'test-project' => [] }
-        add = Commands::Add.new(nil, projects)
-
-        add.execute('task test-project My Task')
-        add.execute('task test-project My Task')
-
-        expect(projects["test-project"].first.id).to eq(1)
-        expect(projects["test-project"].last.id).to eq(2)
-      end
-    end
-
-    context 'when the project does not exist' do
-      it 'prints an error message' do
-        output = StringIO.new
-        projects = {}
-        add = Commands::Add.new(output, projects)
-
-        add.execute('task test-project My Task')
-
-        expect(output.string).to eq("Could not find a project with the name \"test-project\".\n")
+        expect(Commands::AddTask).to have_received(:execute).with(
+          projects: {},
+          output: output,
+          project: 'test-project',
+          name: 'My Task'
+        )
       end
     end
   end

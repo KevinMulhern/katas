@@ -1,47 +1,48 @@
 module Commands
   class Add
 
-    def initialize(output, projects)
+    def initialize(output:, projects:, params:)
       @output = output
       @projects = projects
+      @params = Params.new(params)
     end
 
-    def execute(command_line)
-      subcommand, rest = command_line.split(/ /, 2)
+    def self.execute(**args)
+      new(args).execute
+    end
 
-      if subcommand == 'project'
-        add_project(rest)
-      elsif subcommand == 'task'
-        project, description = rest.split(/ /, 2)
-        add_task(project, description)
+    def execute
+      if params.project?
+        AddProject.execute(projects: projects, name: params.name)
+      elsif params.task?
+        AddTask.execute(projects: projects, project: params.project, name: params.name, output: output)
       end
     end
 
     private
 
-    attr_reader :output, :projects
+    attr_reader :output, :projects, :params
 
-    def add_project(name)
-      projects[name] = []
-    end
-
-    def add_task(project, description)
-      project_tasks = projects[project]
-
-      if project_tasks.nil?
-        output.printf("Could not find a project with the name \"%s\".\n", project)
-        return
+    class Params
+      def initialize(params)
+        @params = params.split(' ', 3)
       end
 
-      project_tasks << Task.new(next_id, description, false)
-    end
+      def name
+        @params.last
+      end
 
-    def next_id
-      all_tasks = projects.flat_map { |_, tasks| tasks }
-      last_task_id = all_tasks.last&.id
+      def project
+        @params[1]
+      end
 
-      last_task_id ||= 0
-      last_task_id + 1
+      def task?
+        @params.first == 'task'
+      end
+
+      def project?
+        @params.first == 'project'
+      end
     end
   end
 end

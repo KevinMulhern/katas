@@ -38,7 +38,7 @@ class TaskList
       when 'show'
         Commands::Show.new(@output, @projects).execute
       when 'add'
-        Commands::Add.new(@output, @projects).execute(rest)
+        Commands::Add.execute(output: @output, projects: @projects, params: rest)
       when 'check'
         Commands::Check.new(@output, @projects).execute(rest)
       when 'uncheck'
