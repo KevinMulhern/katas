@@ -1,10 +1,10 @@
 module Commands
   class AddTask
 
-    def initialize(projects:, output:, project:, name:)
+    def initialize(projects:, output:, project_name:, name:)
       @projects = projects
       @output = output
-      @project = project
+      @project_name = project_name
       @name = name
     end
 
@@ -13,18 +13,18 @@ module Commands
     end
 
     def execute
-      project_tasks = projects.find(project)
+      project = projects.find(project_name)
 
-      if project_tasks.nil?
-        output.printf("Could not find a project with the name \"%s\".\n", project)
+      if project.nil?
+        output.printf("Could not find a project with the name \"%s\".\n", project_name)
         return
       end
 
-      project_tasks << Task.new(next_id, name, false)
+      project.tasks << Task.new(next_id, name, false)
     end
 
     def next_id
-      all_tasks = projects.flat_map { |_, tasks| tasks }
+      all_tasks = projects.all.flat_map(&:tasks)
       last_task_id = all_tasks.last&.id
 
       last_task_id ||= 0
@@ -33,6 +33,6 @@ module Commands
 
     private
 
-    attr_reader :projects, :output, :project, :name
+    attr_reader :projects, :output, :project_name, :name
   end
 end

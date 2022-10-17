@@ -10,10 +10,10 @@ module Commands
     end
 
     def execute
-      projects.each do |name, tasks|
-        output.puts name
+      projects.each do |project|
+        output.puts project.name
 
-        tasks.each do |task|
+        project.tasks.each do |task|
           output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
         end
 

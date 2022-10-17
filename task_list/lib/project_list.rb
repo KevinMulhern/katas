@@ -1,7 +1,9 @@
+require_relative 'Project'
+
 class ProjectList
   include Enumerable
 
-  def initialize(projects = {})
+  def initialize(projects = [])
     @projects = projects
   end
 
@@ -10,29 +12,27 @@ class ProjectList
   end
 
   def add(name)
-    @projects[name] = []
+    @projects << Project.new(name)
   end
 
   def all
     @projects
   end
 
-  def find(project)
-    @projects[project]
+  def find(name)
+    @projects.find { |project| project.name == name }
   end
 
-  def []=(key, value)
-    @projects[key]= value
-  end
+  # def []=(key, value)
+  #   @projects[key]= value
+  # end
 
-  def [](key)
-    @projects[key]
-  end
+  # def [](key)
+  #   @projects[key]
+  # end
 
   def find_task(id)
-    @projects.collect do |_, tasks|
-      tasks.find { |task| task.id == id }
-    end.reject(&:nil?).first
+    @projects.flat_map(&:tasks).find { |task| task.id == id }
   end
 
 

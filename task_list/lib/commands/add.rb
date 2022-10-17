@@ -15,7 +15,12 @@ module Commands
       if params.project?
         AddProject.execute(projects: projects, name: params.name)
       elsif params.task?
-        AddTask.execute(projects: projects, project: params.project, name: params.name, output: output)
+        AddTask.execute(
+          projects: projects,
+          project_name: params.project_name,
+          name: params.name,
+          output: output
+        )
       end
     end
 
@@ -32,7 +37,7 @@ module Commands
         @params.last
       end
 
-      def project
+      def project_name
         @params[1]
       end
 

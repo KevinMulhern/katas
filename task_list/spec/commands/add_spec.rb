@@ -45,7 +45,7 @@ RSpec.describe Commands::Add do
         expect(Commands::AddTask).to have_received(:execute).with(
           projects: projects,
           output: output,
-          project: 'test-project',
+          project_name: 'test-project',
           name: 'My Task'
         )
       end

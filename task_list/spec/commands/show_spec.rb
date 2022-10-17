@@ -7,8 +7,8 @@ RSpec.describe Commands::Show do
     context 'with one task' do
       it 'prints the tasks for the project' do
         output = StringIO.new
-        projects = { 'test-project' => [Task.new(1, 'My Task', false)] }
-        command = described_class.new(output: output, projects: projects)
+        project_list = ProjectList.new([Project.new('test-project', [Task.new(1, 'My Task', false)])])
+        command = described_class.new(output: output, projects: project_list)
 
         command.execute
 
@@ -25,13 +25,15 @@ RSpec.describe Commands::Show do
     context 'with multiple tasks' do
       it 'prints the tasks for the project' do
         output = StringIO.new
-        projects = {
-          'test-project' => [
+        project = Project.new(
+          'test-project',
+          [
             Task.new(1, 'My First Task', false),
             Task.new(2, 'My Second Task', false),
           ]
-        }
-        command = described_class.new(output: output, projects: projects)
+        )
+        project_list = ProjectList.new([project])
+        command = described_class.new(output: output, projects: project_list)
 
         command.execute
 
