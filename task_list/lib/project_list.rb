@@ -21,5 +21,11 @@ class ProjectList
     @projects[key]
   end
 
+  def find_task(id)
+    @projects.collect do |_, tasks|
+      tasks.find { |task| task.id == id }
+    end.reject(&:nil?).first
+  end
+
 
 end
