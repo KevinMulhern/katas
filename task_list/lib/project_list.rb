@@ -17,6 +17,10 @@ class ProjectList
     @projects
   end
 
+  def find(project)
+    @projects[project]
+  end
+
   def []=(key, value)
     @projects[key]= value
   end

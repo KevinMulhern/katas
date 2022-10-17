@@ -13,7 +13,7 @@ module Commands
     end
 
     def execute
-      project_tasks = projects[project]
+      project_tasks = projects.find(project)
 
       if project_tasks.nil?
         output.printf("Could not find a project with the name \"%s\".\n", project)

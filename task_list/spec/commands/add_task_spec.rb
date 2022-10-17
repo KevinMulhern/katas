@@ -4,7 +4,7 @@ RSpec.describe Commands::AddTask do
 
   describe '#execute' do
     it 'adds the task to the project' do
-      projects = { 'test-project' => [] }
+      projects = ProjectList.new({ 'test-project' => [] })
       command = described_class.new(projects: projects, output: nil, project: 'test-project', name: 'My Task')
 
       command.execute
@@ -13,7 +13,7 @@ RSpec.describe Commands::AddTask do
     end
 
     it 'assigns the task an ID' do
-      projects = { 'test-project' => [] }
+      projects = ProjectList.new({ 'test-project' => [] })
       command = described_class.new(projects: projects, output: nil, project: 'test-project', name: 'My Task')
 
       command.execute
@@ -22,7 +22,7 @@ RSpec.describe Commands::AddTask do
     end
 
     it 'assigns incremental IDs' do
-      projects = { 'test-project' => [Task.new(1, 'My Task', false)] }
+      projects = ProjectList.new({ 'test-project' => [Task.new(1, 'My Task', false)] })
       command = described_class.new(projects: projects, output: nil, project: 'test-project', name: 'My Task')
 
       command.execute
@@ -34,7 +34,7 @@ RSpec.describe Commands::AddTask do
     context 'when the project does not exist' do
       it 'prints an error message' do
         output = StringIO.new
-        projects = { }
+        projects = ProjectList.new({})
         command = described_class.new(projects: projects, output: output, project: 'test-project', name: 'My Task')
 
         command.execute

@@ -10,8 +10,9 @@ RSpec.describe Commands::Add do
       end
 
       it 'delegates to the add project command' do
+        projects = instance_double(ProjectList)
         command = described_class.new(
-          projects: {},
+          projects: projects,
           output: nil,
           params: 'project test-project'
         )
@@ -19,7 +20,7 @@ RSpec.describe Commands::Add do
         command.execute
 
         expect(Commands::AddProject).to have_received(:execute).with(
-          projects: {},
+          projects: projects,
           name: 'test-project'
         )
       end
@@ -31,9 +32,10 @@ RSpec.describe Commands::Add do
       end
 
       it 'delegates to the add task command' do
+        projects = instance_double(ProjectList)
         output = double
         command = described_class.new(
-          projects: {},
+          projects: projects,
           output: output,
           params: 'task test-project My Task'
         )
@@ -41,7 +43,7 @@ RSpec.describe Commands::Add do
         command.execute
 
         expect(Commands::AddTask).to have_received(:execute).with(
-          projects: {},
+          projects: projects,
           output: output,
           project: 'test-project',
           name: 'My Task'
