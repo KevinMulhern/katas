@@ -1,4 +1,5 @@
 require_relative 'task'
+require_relative 'project_list'
 
 # TODO: Glob these files
 require_relative 'commands/show'
@@ -14,7 +15,7 @@ class TaskList
     @input = input
     @output = output
 
-    @projects = {}
+    @projects = ProjectList.new
   end
 
   def run
