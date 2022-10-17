@@ -1,0 +1,46 @@
+require_relative '../lib/project_list'
+
+RSpec.describe ProjectList do
+
+  describe '#add' do
+    it 'adds a new project to the list' do
+      project_list = described_class.new
+
+      project_list.add('test-project')
+
+      expect(project_list.first.name).to eq('test-project')
+    end
+  end
+
+  describe '#all' do
+    it 'returns all projects' do
+      project_one = instance_double(Project)
+      project_two = instance_double(Project)
+      project_list = described_class.new([project_one, project_two])
+
+      expect(project_list.all).to eq([project_one, project_two])
+    end
+  end
+
+  describe '#find' do
+    it 'finds a project by name' do
+      project_one = instance_double(Project, name: 'test-project')
+      project_two = instance_double(Project, name: 'another-project')
+      project_list = described_class.new([project_one, project_two])
+
+      expect(project_list.find('test-project')).to eq(project_one)
+    end
+  end
+
+  describe '#find_task' do
+    it 'finds a task by id' do
+      expected_task = instance_double(Task, id: 12)
+      unexpected_task = instance_double(Task, id: 89)
+      project_one = instance_double(Project, tasks: [expected_task])
+      project_two = instance_double(Project, tasks: [unexpected_task])
+      project_list = described_class.new([project_one, project_two])
+
+      expect(project_list.find_task(12)).to eq(expected_task)
+    end
+  end
+end

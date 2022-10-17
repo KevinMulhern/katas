@@ -23,17 +23,7 @@ class ProjectList
     @projects.find { |project| project.name == name }
   end
 
-  # def []=(key, value)
-  #   @projects[key]= value
-  # end
-
-  # def [](key)
-  #   @projects[key]
-  # end
-
   def find_task(id)
     @projects.flat_map(&:tasks).find { |task| task.id == id }
   end
-
-
 end
