@@ -7,10 +7,9 @@ RSpec.describe Commands::Uncheck do
       it 'marks the task as not done' do
         project = Project.new('test-project', [Task.new(1, 'My Task', true)])
         project_list = ProjectList.new([project])
-        command = described_class.new(output: nil, projects: project_list, task_id: '1')
 
         expect(project.tasks.first).to be_done
-        command.execute
+        described_class.execute(output: nil, projects: project_list, params: '1')
         expect(project.tasks.first).not_to be_done
       end
     end
@@ -19,9 +18,9 @@ RSpec.describe Commands::Uncheck do
       it 'prints an error message' do
         output = StringIO.new
         project_list = ProjectList.new
-        command = described_class.new(output: output, projects: project_list, task_id: '1')
 
-        command.execute
+        described_class.execute(output: output, projects: project_list, params: '1')
+
         expect(output.string).to eq("Could not find a task with an ID of 1.\n")
       end
     end

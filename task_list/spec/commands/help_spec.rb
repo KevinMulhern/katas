@@ -5,9 +5,8 @@ RSpec.describe Commands::Help do
   describe '#execute' do
     it 'prints the help documentation' do
       output = StringIO.new
-      command = described_class.new(output: output)
 
-      command.execute
+      described_class.execute(output: output, projects: [], params: {})
 
       expect(output.string).to eq(
         <<~HELP

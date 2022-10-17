@@ -6,7 +6,7 @@ module Commands
     end
 
     def self.execute(**args)
-      new(args).execute
+      new(output: args[:output]).execute
     end
 
     def execute

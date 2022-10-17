@@ -6,7 +6,7 @@ module Commands
     end
 
     def self.execute(**args)
-      new(**args).execute
+      new(output: args.fetch(:output), projects: args.fetch(:projects)).execute
     end
 
     def execute

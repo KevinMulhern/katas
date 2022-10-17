@@ -3,7 +3,7 @@ require_relative 'project_list'
 
 # TODO: Glob these files
 require_relative 'commands/show'
-require_relative 'commands/add'
+# require_relative 'commands/add'
 require_relative 'commands/check'
 require_relative 'commands/uncheck'
 require_relative 'commands/help'
@@ -35,19 +35,12 @@ class TaskList
   def execute(command_line)
     command, rest = command_line.split(/ /, 2)
 
-    case command
-      when 'show'
-        Commands::Show.execute(output: @output, projects: @projects)
-      when 'add'
-        Commands::Add.execute(output: @output, projects: @projects, params: rest)
-      when 'check'
-        Commands::Check.execute(output: @output, projects: @projects, task_id: rest)
-      when 'uncheck'
-        Commands::Uncheck.execute(output: @output, projects: @projects, task_id: rest)
-      when 'help'
-        Commands::Help.execute(outputs: @output)
-      else
-        @output.printf("I don't know what the command \"%s\" is.\n", command)
+    begin
+      command_obj = Commands.const_get(command.capitalize)
+    rescue NameError
+      @output.printf("I don't know what the command \"%s\" is.\n", command)
+    else
+      command_obj.public_send(:execute, output: @output, projects: @projects, params: rest)
     end
   end
 end
