@@ -11,7 +11,7 @@ module Commands
     end
 
     def execute
-      projects[name] = []
+      projects.add(name)
     end
 
     private

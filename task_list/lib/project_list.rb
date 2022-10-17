@@ -9,7 +9,11 @@ class ProjectList
     @projects.each(&block)
   end
 
-  def to_h
+  def add(name)
+    @projects[name] = []
+  end
+
+  def all
     @projects
   end
 

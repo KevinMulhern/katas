@@ -12,9 +12,7 @@ module Commands
     end
 
     def execute
-      task = projects.collect { |_, tasks|
-        tasks.find { |t| t.id == task_id }
-      }.reject(&:nil?).first
+      task = projects.find_task(task_id)
 
       if task.nil?
         output.printf("Could not find a task with an ID of %d.\n", task_id)
