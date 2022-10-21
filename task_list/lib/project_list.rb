@@ -26,4 +26,8 @@ class ProjectList
   def find_task(id)
     @projects.flat_map(&:tasks).find { |task| task.id == id }
   end
+
+  def tasks_with_dealine(date)
+    @projects.flat_map(&:tasks).select { |task| task.deadline == date }
+  end
 end

@@ -49,4 +49,14 @@ RSpec.describe Task do
       expect(task).not_to be_done
     end
   end
+
+  describe '#add_deadlin' do
+    it 'adds a deadline to the task' do
+      task = Task.new(1, 'My Task', true)
+
+      expect(task.deadline).to be_nil
+      task.add_deadline(Date.new(2019, 1, 1))
+      expect(task.deadline).to eq(Date.new(2019, 1, 1))
+    end
+  end
 end

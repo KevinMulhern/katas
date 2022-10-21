@@ -62,6 +62,11 @@ describe 'application' do
       execute('check 5')
       execute('check 6')
 
+      execute("deadline 6 #{Date.today.to_s}")
+      execute("deadline 2 #{Date.today.to_s}")
+      execute("deadline 4 #{(Date.today + 10).to_s}")
+      execute("deadline 3 #{(Date.today + 20).to_s}")
+
       execute('show')
       read_lines(
           'secrets',
@@ -76,6 +81,13 @@ describe 'application' do
           '  [ ] 7: Outside-In TDD',
           '  [ ] 8: Interaction-Driven Design',
           ''
+      )
+
+      execute('today')
+      read_lines(
+        '[ ] 2: Destroy all humans.',
+        '[x] 6: Primitive Obsession',
+        ''
       )
 
       execute('quit')

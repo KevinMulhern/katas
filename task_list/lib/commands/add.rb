@@ -1,3 +1,6 @@
+require_relative 'add_project'
+require_relative 'add_task'
+
 module Commands
   class Add
 
