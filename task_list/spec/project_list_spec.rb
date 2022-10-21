@@ -43,4 +43,16 @@ RSpec.describe ProjectList do
       expect(project_list.find_task(12)).to eq(expected_task)
     end
   end
+
+  describe '#delete_task' do
+    it 'deletes a task from a project' do
+      task = instance_double(Task, id: 12)
+      project = instance_double(Project, tasks: [task])
+      project_list = described_class.new([project])
+
+      project_list.delete_task(task)
+
+      expect(project.tasks).to be_empty
+    end
+  end
 end

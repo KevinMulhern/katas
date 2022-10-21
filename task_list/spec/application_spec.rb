@@ -67,6 +67,8 @@ describe 'application' do
       execute("deadline 4 #{(Date.today + 10).to_s}")
       execute("deadline 3 #{(Date.today + 20).to_s}")
 
+      execute("delete 8")
+
       execute('show')
       read_lines(
           'secrets',
@@ -79,7 +81,6 @@ describe 'application' do
           '  [x] 5: Coupling and Cohesion',
           '  [x] 6: Primitive Obsession',
           '  [ ] 7: Outside-In TDD',
-          '  [ ] 8: Interaction-Driven Design',
           ''
       )
 

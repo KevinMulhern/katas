@@ -30,4 +30,10 @@ class ProjectList
   def tasks_with_dealine(date)
     @projects.flat_map(&:tasks).select { |task| task.deadline == date }
   end
+
+  def delete_task(task)
+    @projects.each do |project|
+      project.tasks.delete(task)
+    end
+  end
 end
