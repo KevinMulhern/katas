@@ -35,13 +35,13 @@ describe 'application' do
 
   it 'works' do
     Timeout::timeout 1 do
-      execute('show')
+      execute('view by project')
 
       execute('add project secrets')
       execute('add task secrets Eat more donuts.')
       execute('add task secrets Destroy all humans.')
 
-      execute('show')
+      execute('view by project')
       read_lines(
         'secrets',
         '  [ ] 1: Eat more donuts.',
@@ -67,9 +67,23 @@ describe 'application' do
       execute("deadline 4 #{(Date.today + 10).to_s}")
       execute("deadline 3 #{(Date.today + 20).to_s}")
 
+      execute('view by deadline')
+      read_lines(
+          "#{Date.today.to_s}",
+          '  [ ] 2: Destroy all humans.',
+          '  [x] 6: Primitive Obsession',
+          '',
+          "#{(Date.today + 20).to_s}",
+          '  [x] 3: Four Elements of Simple Design',
+          '',
+          "#{(Date.today + 10).to_s}",
+          '  [ ] 4: SOLID',
+          ''
+      )
+
       execute("delete 8")
 
-      execute('show')
+      execute('view by project')
       read_lines(
           'secrets',
           '  [x] 1: Eat more donuts.',

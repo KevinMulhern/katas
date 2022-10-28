@@ -2,7 +2,7 @@ require_relative 'task'
 require_relative 'project_list'
 
 # TODO: Glob these files
-require_relative 'commands/show'
+require_relative 'commands/view'
 require_relative 'commands/add'
 require_relative 'commands/check'
 require_relative 'commands/uncheck'

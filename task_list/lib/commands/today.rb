@@ -17,7 +17,7 @@ module Commands
     end
 
     def execute
-      tasks = @projects.tasks_with_dealine(deadline)
+      tasks = @projects.tasks_with_deadline(deadline)
 
       if tasks.empty?
         output.puts "No tasks due today."
