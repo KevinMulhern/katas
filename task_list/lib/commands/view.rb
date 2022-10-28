@@ -1,5 +1,6 @@
 require_relative 'view_by/project'
 require_relative 'view_by/deadline'
+require_relative 'view_by/date'
 
 module Commands
   class View

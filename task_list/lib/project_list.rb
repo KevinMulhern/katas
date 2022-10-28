@@ -35,6 +35,14 @@ class ProjectList
     @projects.flat_map(&:tasks).map(&:deadline).compact.uniq
   end
 
+  def task_creation_dates
+    @projects.flat_map(&:tasks).map(&:created_at).compact.uniq
+  end
+
+  def tasks_created_on(date)
+    @projects.flat_map(&:tasks).select { |task| task.created_at == date }
+  end
+
   def delete_task(task)
     @projects.each do |project|
       project.tasks.delete(task)

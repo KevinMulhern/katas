@@ -20,7 +20,7 @@ module Commands
         return
       end
 
-      project.tasks << Task.new(next_id, name, false)
+      project.tasks << Task.new(id: next_id, description: name, done: false)
     end
 
     def next_id

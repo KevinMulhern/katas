@@ -67,6 +67,29 @@ RSpec.describe ProjectList do
     end
   end
 
+  describe '#task_creation_dates' do
+    it 'returns all unique task creation dates' do
+      project_one = instance_double(Project, tasks: [instance_double(Task, created_at: Date.new(2019, 1, 1))])
+      project_two = instance_double(Project, tasks: [instance_double(Task, created_at: Date.new(2019, 1, 2))])
+      project_three = instance_double(Project, tasks: [instance_double(Task, created_at: Date.new(2019, 1, 2))])
+      project_list = described_class.new([project_one, project_two, project_three])
+
+      expect(project_list.task_creation_dates).to eq([Date.new(2019, 1, 1), Date.new(2019, 1, 2)])
+    end
+  end
+
+  describe '#tasks_created_on' do
+    it 'returns all tasks created on a given date' do
+      expected_task = instance_double(Task, created_at: Date.new(2019, 1, 1))
+      unexpected_task = instance_double(Task, created_at: Date.new(2019, 1, 2))
+      project_one = instance_double(Project, tasks: [expected_task])
+      project_two = instance_double(Project, tasks: [unexpected_task])
+      project_list = described_class.new([project_one, project_two])
+
+      expect(project_list.tasks_created_on(Date.new(2019, 1, 1))).to eq([expected_task])
+    end
+  end
+
   describe '#delete_task' do
     it 'deletes a task from a project' do
       task = instance_double(Task, id: 12)

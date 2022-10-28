@@ -13,9 +13,9 @@ RSpec.describe Commands::Today do
         project = Project.new(
           'test-project',
           [
-            Task.new(1, 'My First Task', false, Date.today),
-            Task.new(1, 'My Second Task', false, Date.today + 1),
-            Task.new(1, 'My Third Task', false, Date.today),
+            Task.new(id: 1, description: 'My First Task', done: false, deadline: Date.today),
+            Task.new(id: 2, description: 'My Second Task', done: false, deadline: Date.today + 1),
+            Task.new(id: 3, description: 'My Third Task', done: false, deadline: Date.today),
           ]
         )
         project_list = ProjectList.new([project])
@@ -25,7 +25,7 @@ RSpec.describe Commands::Today do
         expect(output.string).to eq(
           <<~Today
             [ ] 1: My First Task
-            [ ] 1: My Third Task
+            [ ] 3: My Third Task
 
           Today
         )
@@ -38,8 +38,8 @@ RSpec.describe Commands::Today do
         project = Project.new(
           'test-project',
           [
-            Task.new(1, 'My First Task', false),
-            Task.new(2, 'My Second Task', false),
+            Task.new(id: 1, description: 'My First Task', done: false),
+            Task.new(id: 2, description: 'My Second Task', done: false),
           ]
         )
         project_list = ProjectList.new([project])

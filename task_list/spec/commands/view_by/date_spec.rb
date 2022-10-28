@@ -2,21 +2,14 @@ require_relative '../../../lib/commands/view_by/deadline'
 require_relative '../../../lib/project_list'
 require_relative '../../../lib/task'
 
-RSpec.describe Commands::ViewBy::Deadline do
+RSpec.describe Commands::ViewBy::Date do
 
   describe '#execute' do
 
-    context 'with no deadlines' do
+    context 'with no tasks' do
       it 'prints nothing' do
         output = StringIO.new
-        project_list = ProjectList.new([
-          Project.new(
-            'test-project',
-            [
-              Task.new(id: 1, description: 'My Task', done: false)
-            ]
-          )
-        ])
+        project_list = ProjectList.new([Project.new('test-project',[])])
 
         described_class.execute(output: output, projects: project_list, params: {})
 
@@ -31,7 +24,7 @@ RSpec.describe Commands::ViewBy::Deadline do
           Project.new(
             'test-project',
             [
-              Task.new(id: 1, description: 'My Task', done: false, deadline: '2019-01-01')
+              Task.new(id: 1, description: 'My Task', done: false, created_at: '2019-01-01')
             ]
           )
         ])
@@ -54,15 +47,15 @@ RSpec.describe Commands::ViewBy::Deadline do
         project_one = Project.new(
           'test-project',
           [
-            Task.new(id: 1, description: 'My First Task', done: false, deadline: '2019-01-01'),
-            Task.new(id: 2, description: 'My Second Task', done: false, deadline: '2019-01-02'),
+            Task.new(id: 1, description: 'My First Task', done: false, created_at: '2019-01-01'),
+            Task.new(id: 2, description: 'My Second Task', done: false, created_at: '2019-01-02'),
 
           ]
         )
         project_two = Project.new(
           'another-project',
           [
-            Task.new(id: 3, description: 'My Third Task', done: false, deadline: '2019-01-01')
+            Task.new(id: 3, description: 'My Third Task', done: false, created_at: '2019-01-01')
           ]
         )
         project_list = ProjectList.new([project_one, project_two])

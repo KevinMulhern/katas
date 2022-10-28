@@ -1,4 +1,7 @@
 require_relative '../../../lib/commands/view_by/project'
+require_relative '../../../lib/project_list'
+require_relative '../../../lib/project'
+require_relative '../../../lib/task'
 
 RSpec.describe Commands::ViewBy::Project do
 
@@ -18,7 +21,14 @@ RSpec.describe Commands::ViewBy::Project do
     context 'with one project' do
       it 'prints the tasks for the project' do
         output = StringIO.new
-        project_list = ProjectList.new([Project.new('test-project', [Task.new(1, 'My Task', false)])])
+        project_list = ProjectList.new([
+          Project.new(
+            'test-project',
+            [
+              Task.new(id: 1, description: 'My Task', done: false)
+            ]
+          )
+        ])
 
         described_class.execute(output: output, projects: project_list, params: {})
 
@@ -38,11 +48,16 @@ RSpec.describe Commands::ViewBy::Project do
         project_one = Project.new(
           'test-project',
           [
-            Task.new(1, 'My First Task', false),
-            Task.new(2, 'My Second Task', false),
+            Task.new(id: 1, description: 'My First Task', done: false),
+            Task.new(id: 2, description: 'My Second Task', done: false),
           ]
         )
-        project_two = Project.new('another-project', [Task.new(3, 'My Third Task', false)])
+        project_two = Project.new(
+          'another-project',
+          [
+            Task.new(id: 3, description: 'My Third Task', done: false)
+          ]
+        )
         project_list = ProjectList.new([project_one, project_two])
 
         described_class.execute(output: output, projects: project_list)

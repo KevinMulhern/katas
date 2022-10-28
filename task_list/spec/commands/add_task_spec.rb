@@ -1,4 +1,6 @@
 require_relative '../../lib/commands/add_task'
+require_relative '../../lib/project_list'
+require_relative '../../lib/task'
 
 RSpec.describe Commands::AddTask do
 
@@ -34,7 +36,7 @@ RSpec.describe Commands::AddTask do
     end
 
     it 'assigns incremental IDs' do
-      project = Project.new('test-project', [Task.new(1, 'My Task', false)])
+      project = Project.new('test-project', [Task.new(id: 1, description: 'My Task', done: false)])
       project_list = ProjectList.new([project])
       command = described_class.new(
         projects: project_list,

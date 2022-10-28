@@ -98,6 +98,19 @@ describe 'application' do
           ''
       )
 
+      execute('view by date')
+      read_lines(
+        "#{Date.today.to_s}",
+          '  [x] 1: Eat more donuts.',
+          '  [ ] 2: Destroy all humans.',
+          '  [x] 3: Four Elements of Simple Design',
+          '  [ ] 4: SOLID',
+          '  [x] 5: Coupling and Cohesion',
+          '  [x] 6: Primitive Obsession',
+          '  [ ] 7: Outside-In TDD',
+          ''
+      )
+
       execute('today')
       read_lines(
         '[ ] 2: Destroy all humans.',
