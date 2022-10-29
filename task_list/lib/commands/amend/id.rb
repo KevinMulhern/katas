@@ -14,6 +14,8 @@ module Commands
       end
 
       def execute
+        return invalid_id_error unless new_id_valid?
+
         task = projects.find_task(old_id)
 
         if task.nil?
@@ -33,6 +35,13 @@ module Commands
 
       attr_reader :output, :projects, :old_id, :new_id
 
+      def new_id_valid?
+        new_id.match?(/\A[a-z0-9A-Z ]+\z/)
+      end
+
+      def invalid_id_error
+        output.printf("%s is invalid and invalid ID, must only contain letters and numbers.\n", new_id)
+      end
     end
   end
 end

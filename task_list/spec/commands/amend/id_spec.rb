@@ -22,6 +22,23 @@ RSpec.describe Commands::Amend::Id do
       expect(task.id).to eq('A1')
     end
 
+    context 'when the new id is invalid' do
+      it 'prints an error message' do
+        output = StringIO.new
+        project_list = ProjectList.new
+        command = described_class.new(
+          projects: project_list,
+          output: output,
+          old_id: '1',
+          new_id: 'A$'
+        )
+
+        command.execute
+
+        expect(output.string).to eq("A$ is invalid and invalid ID, must only contain letters and numbers.\n")
+      end
+    end
+
     context 'when the task does not exist' do
       it 'prints an error message' do
         output = StringIO.new
