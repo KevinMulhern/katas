@@ -4,7 +4,7 @@ class Task
   attr_reader :id, :description, :deadline, :created_at
 
   def initialize(id:, description:, done:, deadline: nil, created_at: Date.today)
-    @id = id
+    @id = id.to_s
     @description = description
     @done = done
     @deadline = deadline

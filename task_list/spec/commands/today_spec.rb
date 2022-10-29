@@ -38,8 +38,8 @@ RSpec.describe Commands::Today do
         project = Project.new(
           'test-project',
           [
-            Task.new(id: 1, description: 'My First Task', done: false),
-            Task.new(id: 2, description: 'My Second Task', done: false),
+            Task.new(id: '1', description: 'My First Task', done: false),
+            Task.new(id: '2', description: 'My Second Task', done: false),
           ]
         )
         project_list = ProjectList.new([project])

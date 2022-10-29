@@ -24,7 +24,7 @@ RSpec.describe Commands::ViewBy::Date do
           Project.new(
             'test-project',
             [
-              Task.new(id: 1, description: 'My Task', done: false, created_at: '2019-01-01')
+              Task.new(id: '1', description: 'My Task', done: false, created_at: '2019-01-01')
             ]
           )
         ])
@@ -47,15 +47,15 @@ RSpec.describe Commands::ViewBy::Date do
         project_one = Project.new(
           'test-project',
           [
-            Task.new(id: 1, description: 'My First Task', done: false, created_at: '2019-01-01'),
-            Task.new(id: 2, description: 'My Second Task', done: false, created_at: '2019-01-02'),
+            Task.new(id: '1', description: 'My First Task', done: false, created_at: '2019-01-01'),
+            Task.new(id: '2', description: 'My Second Task', done: false, created_at: '2019-01-02'),
 
           ]
         )
         project_two = Project.new(
           'another-project',
           [
-            Task.new(id: 3, description: 'My Third Task', done: false, created_at: '2019-01-01')
+            Task.new(id: '3', description: 'My Third Task', done: false, created_at: '2019-01-01')
           ]
         )
         project_list = ProjectList.new([project_one, project_two])

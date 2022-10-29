@@ -25,7 +25,7 @@ RSpec.describe Commands::ViewBy::Project do
           Project.new(
             'test-project',
             [
-              Task.new(id: 1, description: 'My Task', done: false)
+              Task.new(id: '1', description: 'My Task', done: false)
             ]
           )
         ])
@@ -48,14 +48,14 @@ RSpec.describe Commands::ViewBy::Project do
         project_one = Project.new(
           'test-project',
           [
-            Task.new(id: 1, description: 'My First Task', done: false),
-            Task.new(id: 2, description: 'My Second Task', done: false),
+            Task.new(id: '1', description: 'My First Task', done: false),
+            Task.new(id: '2', description: 'My Second Task', done: false),
           ]
         )
         project_two = Project.new(
           'another-project',
           [
-            Task.new(id: 3, description: 'My Third Task', done: false)
+            Task.new(id: '3', description: 'My Third Task', done: false)
           ]
         )
         project_list = ProjectList.new([project_one, project_two])

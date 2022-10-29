@@ -115,7 +115,7 @@ RSpec.describe ProjectList do
 
   describe '#delete_task' do
     it 'deletes a task from a project' do
-      task = instance_double(Task, id: 12)
+      task = instance_double(Task, id: '12')
       project = instance_double(Project, tasks: [task])
       project_list = described_class.new([project])
 

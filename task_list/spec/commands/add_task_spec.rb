@@ -36,7 +36,7 @@ RSpec.describe Commands::AddTask do
     end
 
     it 'assigns incremental IDs' do
-      project = Project.new('test-project', [Task.new(id: 1, description: 'My Task', done: false)])
+      project = Project.new('test-project', [Task.new(id: '1', description: 'My Task', done: false)])
       project_list = ProjectList.new([project])
       command = described_class.new(
         projects: project_list,
@@ -47,8 +47,8 @@ RSpec.describe Commands::AddTask do
 
       command.execute
 
-      expect(project.tasks.first.id).to eq(1)
-      expect(project.tasks.last.id).to eq(2)
+      expect(project.tasks.first.id).to eq('1')
+      expect(project.tasks.last.id).to eq('2')
     end
 
     context 'when the project does not exist' do
