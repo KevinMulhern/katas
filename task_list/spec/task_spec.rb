@@ -59,4 +59,14 @@ RSpec.describe Task do
       expect(task.deadline).to eq(Date.new(2019, 1, 1))
     end
   end
+
+  describe '#set_id' do
+    it 'sets the task id' do
+      task = Task.new(id: 1, description: 'My Task', done: true)
+
+      expect(task.id).to eq(1)
+      task.set_id('A1')
+      expect(task.id).to eq('A1')
+    end
+  end
 end

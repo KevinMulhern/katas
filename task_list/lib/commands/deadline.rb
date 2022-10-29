@@ -6,7 +6,7 @@ module Commands
     def initialize(output:, projects:, task_id:, deadline:)
       @output = output
       @projects = projects
-      @task_id = task_id.to_i
+      @task_id = task_id
       @deadline = deadline
     end
 

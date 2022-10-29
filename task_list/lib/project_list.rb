@@ -43,6 +43,10 @@ class ProjectList
     @projects.flat_map(&:tasks).select { |task| task.created_at == date }
   end
 
+  def task_has_id?(id)
+    @projects.flat_map(&:tasks).any? { |task| task.id == id }
+  end
+
   def delete_task(task)
     @projects.each do |project|
       project.tasks.delete(task)

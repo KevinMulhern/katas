@@ -4,7 +4,7 @@ module Commands
     def initialize(projects:, output:, task_id:)
       @projects = projects
       @output = output
-      @task_id = task_id.to_i
+      @task_id = task_id
     end
 
     def self.execute(**args)

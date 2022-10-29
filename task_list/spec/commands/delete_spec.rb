@@ -8,9 +8,9 @@ RSpec.describe Commands::Delete do
         project = Project.new(
           'test-project',
           [
-            Task.new(id: 1, description: 'My First Task', done: false),
-            Task.new(id: 2, description: 'My Second Task', done: false),
-            Task.new(id: 3, description: 'My Third Task', done: false),
+            Task.new(id: '1', description: 'My First Task', done: false),
+            Task.new(id: '2', description: 'My Second Task', done: false),
+            Task.new(id: '3', description: 'My Third Task', done: false),
           ]
         )
         project_list = ProjectList.new([project])

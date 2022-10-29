@@ -5,7 +5,7 @@ RSpec.describe Commands::Check do
   describe '#execute' do
     context 'when the task exists' do
       it 'marks the task as done' do
-        project = Project.new('test-project', [Task.new(id: 1, description: 'My Task', done: false)])
+        project = Project.new('test-project', [Task.new(id: '1', description: 'My Task', done: false)])
         project_list = ProjectList.new([project])
 
         expect(project.tasks.first).not_to be_done

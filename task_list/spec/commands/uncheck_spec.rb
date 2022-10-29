@@ -1,11 +1,13 @@
 require_relative '../../lib/commands/uncheck'
+require_relative '../../lib/project_list'
+require_relative '../../lib/task'
 
 RSpec.describe Commands::Uncheck do
 
   describe '#execute' do
     context 'when the task exists' do
       it 'marks the task as not done' do
-        project = Project.new('test-project', [Task.new(id: 1, description: 'My Task', done: true)])
+        project = Project.new('test-project', [Task.new(id: '1', description: 'My Task', done: true)])
         project_list = ProjectList.new([project])
 
         expect(project.tasks.first).to be_done

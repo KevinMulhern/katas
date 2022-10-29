@@ -10,6 +10,7 @@ require_relative 'commands/help'
 require_relative 'commands/deadline'
 require_relative 'commands/today'
 require_relative 'commands/delete'
+require_relative 'commands/amend'
 
 class TaskList
   QUIT = 'quit'

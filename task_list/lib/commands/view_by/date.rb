@@ -16,7 +16,7 @@ module Commands
           output.puts date.to_s
 
           projects.tasks_created_on(date).each do |task|
-            output.printf("  [%c] %d: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
+            output.printf("  [%c] %s: %s\n", (task.done? ? 'x' : ' '), task.id, task.description)
           end
 
           output.puts

@@ -32,7 +32,7 @@ RSpec.describe Commands::AddTask do
 
       command.execute
 
-      expect(project.tasks.first.id).to eq(1)
+      expect(project.tasks.first.id).to eq('1')
     end
 
     it 'assigns incremental IDs' do

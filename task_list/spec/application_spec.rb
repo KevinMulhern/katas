@@ -118,6 +118,41 @@ describe 'application' do
         ''
       )
 
+      execute('amend id 7 A1')
+      execute('view by project')
+      read_lines(
+        'secrets',
+        '  [x] 1: Eat more donuts.',
+        '  [ ] 2: Destroy all humans.',
+        '',
+        'training',
+        '  [x] 3: Four Elements of Simple Design',
+        '  [ ] 4: SOLID',
+        '  [x] 5: Coupling and Cohesion',
+        '  [x] 6: Primitive Obsession',
+        '  [ ] A1: Outside-In TDD',
+        ''
+      )
+
+      execute('add task training Tell dont ask')
+      execute('add task training Law of Demeter')
+      execute('view by project')
+      read_lines(
+        'secrets',
+        '  [x] 1: Eat more donuts.',
+        '  [ ] 2: Destroy all humans.',
+        '',
+        'training',
+        '  [x] 3: Four Elements of Simple Design',
+        '  [ ] 4: SOLID',
+        '  [x] 5: Coupling and Cohesion',
+        '  [x] 6: Primitive Obsession',
+        '  [ ] A1: Outside-In TDD',
+        '  [ ] A2: Tell dont ask',
+        '  [ ] A3: Law of Demeter',
+        ''
+      )
+
       execute('quit')
     end
   end

@@ -5,7 +5,7 @@ RSpec.describe Commands::Deadline do
   describe '#execute' do
     context 'when the task exists' do
       it 'adds the deadline to the task' do
-        project = Project.new('test-project', [Task.new(id: 1, description: 'My Task', done: false)])
+        project = Project.new('test-project', [Task.new(id: '1', description: 'My Task', done: false)])
         project_list = ProjectList.new([project])
 
         described_class.execute(output: nil, projects: project_list, params: '1 2019-01-01')

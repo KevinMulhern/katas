@@ -34,13 +34,13 @@ RSpec.describe ProjectList do
 
   describe '#find_task' do
     it 'finds a task by id' do
-      expected_task = instance_double(Task, id: 12)
-      unexpected_task = instance_double(Task, id: 89)
+      expected_task = instance_double(Task, id: '12')
+      unexpected_task = instance_double(Task, id: '89')
       project_one = instance_double(Project, tasks: [expected_task])
       project_two = instance_double(Project, tasks: [unexpected_task])
       project_list = described_class.new([project_one, project_two])
 
-      expect(project_list.find_task(12)).to eq(expected_task)
+      expect(project_list.find_task('12')).to eq(expected_task)
     end
   end
 
@@ -88,6 +88,29 @@ RSpec.describe ProjectList do
 
       expect(project_list.tasks_created_on(Date.new(2019, 1, 1))).to eq([expected_task])
     end
+  end
+
+  describe '#task_has_id?' do
+    context 'when the task exists' do
+      it 'returns true' do
+        project_one = instance_double(Project, tasks: [instance_double(Task, id: '12')])
+        project_two = instance_double(Project, tasks: [instance_double(Task, id: '89')])
+        project_list = described_class.new([project_one, project_two])
+
+        expect(project_list.task_has_id?('12')).to eq(true)
+      end
+    end
+
+    context 'when the task does not exist' do
+      it 'returns false' do
+        project_one = instance_double(Project, tasks: [instance_double(Task, id: '12')])
+        project_two = instance_double(Project, tasks: [instance_double(Task, id: '89')])
+        project_list = described_class.new([project_one, project_two])
+
+        expect(project_list.task_has_id?('99')).to eq(false)
+      end
+    end
+
   end
 
   describe '#delete_task' do

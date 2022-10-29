@@ -27,8 +27,8 @@ module Commands
       all_tasks = projects.all.flat_map(&:tasks)
       last_task_id = all_tasks.last&.id
 
-      last_task_id ||= 0
-      last_task_id + 1
+      last_task_id ||= '0'
+      last_task_id.succ
     end
 
     private

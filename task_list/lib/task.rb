@@ -26,4 +26,8 @@ class Task
   def add_deadline(deadline)
     @deadline = deadline
   end
+
+  def set_id(id)
+    @id = id
+  end
 end
