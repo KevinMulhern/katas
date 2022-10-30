@@ -16,10 +16,6 @@ class DinnerExpense
     "Dinner"
   end
 
-  def type
-    :dinner
-  end
-
   def meal?
     true
   end
@@ -45,10 +41,6 @@ class BreakfastExpense
     "Breakfast"
   end
 
-  def type
-    :breakfast
-  end
-
   def meal?
     true
   end
@@ -71,10 +63,6 @@ class CarRentalExpense
 
   def name
     "Car Rental"
-  end
-
-  def type
-    :car_rental
   end
 
   def meal?
