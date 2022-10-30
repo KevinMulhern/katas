@@ -3,11 +3,12 @@ require_relative 'expense_report'
 RSpec.describe ExpenseReport do
 
   describe "#print_report" do
-
     it "prints the report" do
-      dinner = Expenses::DinnerExpense.new(5000)
-      breakfast = Expenses::BreakfastExpense.new(1000)
-      car_rental = Expenses::CarRentalExpense.new(5000)
+      expenses = ExpenseCollection.new([
+        Expenses::DinnerExpense.new(5000),
+        Expenses::BreakfastExpense.new(1000),
+        Expenses::CarRentalExpense.new(5000),
+      ])
 
       expected_output = <<~EXPENSE_REPORT
         Expenses: #{Time.now}
@@ -19,7 +20,7 @@ RSpec.describe ExpenseReport do
       EXPENSE_REPORT
 
       expect {
-        described_class.new([dinner, breakfast, car_rental]).to_s
+        described_class.new(expenses).to_s
       }.to output(
         expected_output
       ).to_stdout
@@ -27,9 +28,11 @@ RSpec.describe ExpenseReport do
 
     context "when meal expenses are over their limits" do
       it "prints the report" do
-        dinner = Expenses::DinnerExpense.new(6000)
-        breakfast = Expenses::BreakfastExpense.new(7000)
-        car_rental = Expenses::CarRentalExpense.new(5000)
+        expenses = ExpenseCollection.new([
+          Expenses::DinnerExpense.new(6000),
+          Expenses::BreakfastExpense.new(7000),
+          Expenses::CarRentalExpense.new(5000),
+        ])
 
         expected_output = <<~EXPENSE_REPORT
           Expenses: #{Time.now}
@@ -41,7 +44,7 @@ RSpec.describe ExpenseReport do
         EXPENSE_REPORT
 
         expect {
-          described_class.new([dinner, breakfast, car_rental]).to_s
+          described_class.new(expenses).to_s
         }.to output(
           expected_output
         ).to_stdout
@@ -50,10 +53,12 @@ RSpec.describe ExpenseReport do
 
     context "with lunch expense" do
       it "prints the report" do
-        breakfast = Expenses::BreakfastExpense.new(1000)
-        lunch = Expenses::LunchExpense.new(1000)
-        dinner = Expenses::DinnerExpense.new(3000)
-        car_rental = Expenses::CarRentalExpense.new(5000)
+        expenses = ExpenseCollection.new([
+          Expenses::BreakfastExpense.new(1000),
+          Expenses::LunchExpense.new(1000),
+          Expenses::DinnerExpense.new(3000),
+          Expenses::CarRentalExpense.new(5000)
+        ])
 
         expected_output = <<~EXPENSE_REPORT
           Expenses: #{Time.now}
@@ -66,7 +71,7 @@ RSpec.describe ExpenseReport do
         EXPENSE_REPORT
 
         expect {
-          described_class.new([breakfast, lunch, dinner, car_rental]).to_s
+          described_class.new(expenses).to_s
         }.to output(
           expected_output
         ).to_stdout
@@ -75,10 +80,12 @@ RSpec.describe ExpenseReport do
 
     context "with over limit lunch expense" do
       it "prints the report" do
-        breakfast = Expenses::BreakfastExpense.new(1000)
-        lunch = Expenses::LunchExpense.new(3000)
-        dinner = Expenses::DinnerExpense.new(3000)
-        car_rental = Expenses::CarRentalExpense.new(5000)
+        expenses = ExpenseCollection.new([
+          Expenses::BreakfastExpense.new(1000),
+          Expenses::LunchExpense.new(3000),
+          Expenses::DinnerExpense.new(3000),
+          Expenses::CarRentalExpense.new(5000)
+        ])
 
         expected_output = <<~EXPENSE_REPORT
           Expenses: #{Time.now}
@@ -91,7 +98,7 @@ RSpec.describe ExpenseReport do
         EXPENSE_REPORT
 
         expect {
-          described_class.new([breakfast, lunch, dinner, car_rental]).to_s
+          described_class.new(expenses).to_s
         }.to output(
           expected_output
         ).to_stdout
