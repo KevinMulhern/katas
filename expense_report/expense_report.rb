@@ -16,7 +16,7 @@ class ExpenseReport
   def to_s
     puts "Expenses: #{Time.now}"
 
-    for expense in expenses
+    expenses.each do |expense|
       expenseName = ""
       case expense.type
       when :breakfast
