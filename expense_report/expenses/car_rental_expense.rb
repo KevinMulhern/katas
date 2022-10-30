@@ -1,21 +1,7 @@
+require_relative 'expense'
 
 module Expenses
-  class CarRentalExpense
-    attr_reader :amount
-
-    def initialize(amount)
-      @amount = amount
-    end
-
-    def to_s
-      "#{name}\t#{amount}\t"
-    end
-
-    def meal?
-      false
-    end
-
-    private
+  class CarRentalExpense < Expense
 
     def name
       "Car Rental"

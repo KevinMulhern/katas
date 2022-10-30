@@ -1,15 +1,8 @@
+require_relative 'expense'
+
 module Expenses
-  class DinnerExpense
-    LIMIT = 5000
-    attr_reader :amount
-
-    def initialize(amount)
-      @amount = amount
-    end
-
-    def to_s
-      "#{name}\t#{amount}\t#{'X' if over_limit?}"
-    end
+  class DinnerExpense < Expense
+    DINNER_EXPENSE_LIMIT = 5000
 
     def meal?
       true
@@ -22,7 +15,7 @@ module Expenses
     end
 
     def over_limit?
-      amount > LIMIT
+      amount > DINNER_EXPENSE_LIMIT
     end
   end
 end
