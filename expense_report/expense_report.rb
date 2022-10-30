@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 class DinnerExpense
+  LIMIT = 5000
   attr_reader :amount
 
   def initialize(amount)
@@ -18,9 +19,14 @@ class DinnerExpense
   def meal?
     true
   end
+
+  def over_limit?
+    amount > LIMIT
+  end
 end
 
 class BreakfastExpense
+  LIMIT = 1000
   attr_reader :amount
 
   def initialize(amount)
@@ -37,6 +43,10 @@ class BreakfastExpense
 
   def meal?
     true
+  end
+
+  def over_limit?
+    amount > LIMIT
   end
 end
 
@@ -58,6 +68,10 @@ class CarRentalExpense
   def meal?
     false
   end
+
+  def over_limit?
+    false
+  end
 end
 
 class ExpenseReport
@@ -69,7 +83,7 @@ class ExpenseReport
     puts "Expenses: #{Time.now}"
 
     expenses.each do |expense|
-      mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
+      mealOverExpensesMarker = expense.meal? && expense.over_limit? ? "X" : " "
       puts "#{expense.name}\t#{expense.amount}\t#{mealOverExpensesMarker}"
     end
     puts "Meal Expenses: #{meal_expenses}"
