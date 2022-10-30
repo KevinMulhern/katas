@@ -7,6 +7,10 @@ class Expense
     @amount = amount
     @name = name
   end
+
+  def meal?
+    [:dinner, :breakfast].include?(type)
+  end
 end
 
 class ExpenseReport
@@ -34,6 +38,6 @@ class ExpenseReport
   end
 
   def meal_expenses
-    expenses.select { |expense| expense.type == :dinner || expense.type == :breakfast }.sum(&:amount)
+    expenses.select(&:meal?).sum(&:amount)
   end
 end
