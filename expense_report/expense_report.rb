@@ -12,12 +12,14 @@ class DinnerExpense
     "#{name}\t#{amount}\t#{over_limit? ? 'X' : ' '}"
   end
 
-  def name
-    "Dinner"
-  end
-
   def meal?
     true
+  end
+
+  private
+
+  def name
+    "Dinner"
   end
 
   def over_limit?
@@ -37,12 +39,14 @@ class BreakfastExpense
     "#{name}\t#{amount}\t#{over_limit? ? 'X' : ' '}"
   end
 
-  def name
-    "Breakfast"
-  end
-
   def meal?
     true
+  end
+
+  private
+
+  def name
+    "Breakfast"
   end
 
   def over_limit?
@@ -61,12 +65,14 @@ class CarRentalExpense
     "#{name}\t#{amount}\t "
   end
 
-  def name
-    "Car Rental"
-  end
-
   def meal?
     false
+  end
+
+  private
+
+  def name
+    "Car Rental"
   end
 
   def over_limit?
@@ -86,19 +92,11 @@ class ExpenseReport
       puts expense.to_s
     end
 
-    puts "Meal Expenses: #{meal_expenses}"
-    puts "Total Expenses: #{total}"
+    puts "Meal Expenses: #{expenses.select(&:meal?).sum(&:amount)}"
+    puts "Total Expenses: #{expenses.sum(&:amount)}"
   end
 
   private
 
   attr_reader :expenses
-
-  def total
-    expenses.sum(&:amount)
-  end
-
-  def meal_expenses
-    expenses.select(&:meal?).sum(&:amount)
-  end
 end
