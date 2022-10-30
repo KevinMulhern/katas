@@ -1,15 +1,62 @@
 #!/usr/bin/ruby
 
-class Expense
-  attr_reader :type, :amount, :name
-  def initialize(type, amount, name)
-    @type = type
+class DinnerExpense
+  attr_reader :amount
+
+  def initialize(amount)
     @amount = amount
-    @name = name
+  end
+
+  def name
+    "Dinner"
+  end
+
+  def type
+    :dinner
   end
 
   def meal?
-    [:dinner, :breakfast].include?(type)
+    true
+  end
+end
+
+class BreakfastExpense
+  attr_reader :amount
+
+  def initialize(amount)
+    @amount = amount
+  end
+
+  def name
+    "Breakfast"
+  end
+
+  def type
+    :breakfast
+  end
+
+  def meal?
+    true
+  end
+end
+
+class CarRentalExpense
+  attr_reader :amount
+
+  def initialize(amount)
+    @amount = amount
+  end
+
+  def name
+    "Car Rental"
+  end
+
+  def type
+    :car_rental
+  end
+
+  def meal?
+    false
   end
 end
 
