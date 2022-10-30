@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
 
 class Expense
-  attr_reader :type, :amount
-  def initialize(type, amount)
+  attr_reader :type, :amount, :name
+  def initialize(type, amount, name)
     @type = type
     @amount = amount
+    @name = name
   end
 end
 
@@ -17,18 +18,8 @@ class ExpenseReport
     puts "Expenses: #{Time.now}"
 
     expenses.each do |expense|
-      expenseName = ""
-      case expense.type
-      when :breakfast
-          expenseName = "Breakfast"
-      when :dinner
-          expenseName = "Dinner"
-      when :car_rental
-          expenseName = "Car Rental"
-      end
-
       mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
-      puts "#{expenseName}\t#{expense.amount}\t#{mealOverExpensesMarker}"
+      puts "#{expense.name}\t#{expense.amount}\t#{mealOverExpensesMarker}"
     end
     puts "Meal Expenses: #{meal_expenses}"
     puts "Total Expenses: #{total}"

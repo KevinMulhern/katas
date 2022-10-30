@@ -5,9 +5,9 @@ RSpec.describe ExpenseReport do
   describe "#print_report" do
 
     it "prints the report" do
-      expense_one = Expense.new(:dinner, 5000)
-      expense_two = Expense.new(:breakfast, 1000)
-      expense_three = Expense.new(:car_rental, 5000)
+      expense_one = Expense.new(:dinner, 5000, "Dinner")
+      expense_two = Expense.new(:breakfast, 1000, "Breakfast")
+      expense_three = Expense.new(:car_rental, 5000, "Car Rental")
 
       expected_output = <<~EXPENSE_REPORT
         Expenses: #{Time.now}
@@ -27,9 +27,9 @@ RSpec.describe ExpenseReport do
 
     context "when meal expense is over 5000" do
       it "prints the report" do
-        expense_one = Expense.new(:dinner, 6000)
-        expense_two = Expense.new(:breakfast, 7000)
-        expense_three = Expense.new(:car_rental, 5000)
+        expense_one = Expense.new(:dinner, 6000, "Dinner")
+        expense_two = Expense.new(:breakfast, 7000, "Breakfast")
+        expense_three = Expense.new(:car_rental, 5000, "Car Rental")
 
         expected_output = <<~EXPENSE_REPORT
           Expenses: #{Time.now}
