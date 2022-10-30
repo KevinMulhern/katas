@@ -14,7 +14,6 @@ class ExpenseReport
   end
 
   def to_s
-    total = 0
     mealExpenses = 0
     puts "Expenses: #{Time.now}"
     for expense in expenses
@@ -32,7 +31,6 @@ class ExpenseReport
       end
       mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
       puts "#{expenseName}\t#{expense.amount}\t#{mealOverExpensesMarker}"
-      total += expense.amount
     end
     puts "Meal Expenses: #{mealExpenses}"
     puts "Total Expenses: #{total}"
@@ -41,4 +39,8 @@ class ExpenseReport
   private
 
   attr_reader :expenses
+
+  def total
+    expenses.sum(&:amount)
+  end
 end
