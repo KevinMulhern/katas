@@ -8,27 +8,37 @@ class Expense
   end
 end
 
-def printReport(*expenses)
-  total = 0
-  mealExpenses = 0
-  puts "Expenses: #{Time.now}"
-  for expense in expenses
-    if expense.type == :dinner || expense.type == :breakfast
-      mealExpenses += expense.amount
-    end
-    expenseName = ""
-    case expense.type
-    when :breakfast
-        expenseName = "Breakfast"
-    when :dinner
-        expenseName = "Dinner"
-    when :car_rental
-        expenseName = "Car Rental"
-    end
-    mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
-    puts "#{expenseName}\t#{expense.amount}\t#{mealOverExpensesMarker}"
-    total += expense.amount
+class ExpenseReport
+  def initialize(expenses)
+    @expenses = expenses
   end
-  puts "Meal Expenses: #{mealExpenses}"
-  puts "Total Expenses: #{total}"
+
+  def to_s
+    total = 0
+    mealExpenses = 0
+    puts "Expenses: #{Time.now}"
+    for expense in expenses
+      if expense.type == :dinner || expense.type == :breakfast
+        mealExpenses += expense.amount
+      end
+      expenseName = ""
+      case expense.type
+      when :breakfast
+          expenseName = "Breakfast"
+      when :dinner
+          expenseName = "Dinner"
+      when :car_rental
+          expenseName = "Car Rental"
+      end
+      mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
+      puts "#{expenseName}\t#{expense.amount}\t#{mealOverExpensesMarker}"
+      total += expense.amount
+    end
+    puts "Meal Expenses: #{mealExpenses}"
+    puts "Total Expenses: #{total}"
+  end
+
+  private
+
+  attr_reader :expenses
 end
