@@ -14,12 +14,9 @@ class ExpenseReport
   end
 
   def to_s
-    mealExpenses = 0
     puts "Expenses: #{Time.now}"
+
     for expense in expenses
-      if expense.type == :dinner || expense.type == :breakfast
-        mealExpenses += expense.amount
-      end
       expenseName = ""
       case expense.type
       when :breakfast
@@ -29,10 +26,11 @@ class ExpenseReport
       when :car_rental
           expenseName = "Car Rental"
       end
+
       mealOverExpensesMarker = expense.type == :dinner && expense.amount > 5000 || expense.type == :breakfast && expense.amount > 1000 ? "X" : " "
       puts "#{expenseName}\t#{expense.amount}\t#{mealOverExpensesMarker}"
     end
-    puts "Meal Expenses: #{mealExpenses}"
+    puts "Meal Expenses: #{meal_expenses}"
     puts "Total Expenses: #{total}"
   end
 
@@ -42,5 +40,9 @@ class ExpenseReport
 
   def total
     expenses.sum(&:amount)
+  end
+
+  def meal_expenses
+    expenses.select { |expense| expense.type == :dinner || expense.type == :breakfast }.sum(&:amount)
   end
 end
