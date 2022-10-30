@@ -8,6 +8,10 @@ class DinnerExpense
     @amount = amount
   end
 
+  def to_s
+    "#{name}\t#{amount}\t#{over_limit? ? 'X' : ' '}"
+  end
+
   def name
     "Dinner"
   end
@@ -33,6 +37,10 @@ class BreakfastExpense
     @amount = amount
   end
 
+  def to_s
+    "#{name}\t#{amount}\t#{over_limit? ? 'X' : ' '}"
+  end
+
   def name
     "Breakfast"
   end
@@ -55,6 +63,10 @@ class CarRentalExpense
 
   def initialize(amount)
     @amount = amount
+  end
+
+  def to_s
+    "#{name}\t#{amount}\t "
   end
 
   def name
@@ -83,9 +95,9 @@ class ExpenseReport
     puts "Expenses: #{Time.now}"
 
     expenses.each do |expense|
-      mealOverExpensesMarker = expense.meal? && expense.over_limit? ? "X" : " "
-      puts "#{expense.name}\t#{expense.amount}\t#{mealOverExpensesMarker}"
+      puts expense.to_s
     end
+
     puts "Meal Expenses: #{meal_expenses}"
     puts "Total Expenses: #{total}"
   end
