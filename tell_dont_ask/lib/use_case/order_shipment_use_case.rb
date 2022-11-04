@@ -13,10 +13,6 @@ class OrderShipmentUseCase
   def run(request)
     order = @order_repository.get_by_id(request.order_id)
 
-    raise OrderCannotBeShippedError if order.status == OrderStatus::CREATED || order.status == OrderStatus::REJECTED
-
-    raise OrderCannotBeShippedTwiceError if order.status == OrderStatus::SHIPPED
-
     @shipment_service.ship(order)
 
     order.status = OrderStatus::SHIPPED

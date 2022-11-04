@@ -8,6 +8,9 @@ class TestShipmentService
   end
 
   def ship(order)
+    raise OrderShipmentUseCase::OrderCannotBeShippedError if order.created? || order.rejected?
+    raise OrderShipmentUseCase::OrderCannotBeShippedTwiceError if order.shipped?
+
     @shipped_order = order
   end
 end

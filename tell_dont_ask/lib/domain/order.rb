@@ -21,4 +21,16 @@ class Order
   def tax
     @items.sum(&:tax)
   end
+
+  def rejected?
+    status == OrderStatus::REJECTED
+  end
+
+  def created?
+    status == OrderStatus::CREATED
+  end
+
+  def shipped?
+    status == OrderStatus::SHIPPED
+  end
 end
