@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 class Order
-  attr_accessor :total, :currency, :items, :tax, :status, :id
+  attr_accessor :currency, :items, :status, :id
 
-  def initialize(total: 0.0, currency: 'EUR', items: [], tax: 0.0, status: OrderStatus::CREATED, id: nil)
-    @total = total
+  def initialize(currency: 'EUR', items: [], status: OrderStatus::CREATED, id: nil)
     @currency = currency
     @items = items
-    @tax = tax
     @status = status
     @id = id
   end
 
   def add_item(item)
     @items << item
+  end
+
+  def total
+    @items.sum(&:taxed_amount)
+  end
+
+  def tax
+    @items.sum(&:tax)
   end
 end

@@ -26,8 +26,6 @@ class OrderCreationUseCase
       )
 
       order.add_item(order_item)
-      order.total += order_item.taxed_amount
-      order.tax += order_item.tax
     end
 
     @order_repository.save(order)
