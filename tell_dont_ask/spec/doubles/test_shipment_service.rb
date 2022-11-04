@@ -12,5 +12,6 @@ class TestShipmentService
     raise OrderShipmentUseCase::OrderCannotBeShippedTwiceError if order.shipped?
 
     @shipped_order = order
+    order.shipped!
   end
 end

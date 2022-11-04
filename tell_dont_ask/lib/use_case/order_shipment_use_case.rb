@@ -14,8 +14,6 @@ class OrderShipmentUseCase
     order = @order_repository.get_by_id(request.order_id)
 
     @shipment_service.ship(order)
-
-    order.status = OrderStatus::SHIPPED
     @order_repository.save(order)
   end
 end

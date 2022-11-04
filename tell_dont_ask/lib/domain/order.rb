@@ -33,4 +33,8 @@ class Order
   def shipped?
     status == OrderStatus::SHIPPED
   end
+
+  def shipped!
+    @status = OrderStatus::SHIPPED
+  end
 end
