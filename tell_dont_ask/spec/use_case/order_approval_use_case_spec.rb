@@ -47,7 +47,7 @@ RSpec.describe OrderApprovalUseCase do
 
     request.approved = true
 
-    expect { use_case.run(request) }.to raise_error(described_class::RejectedOrderCannotBeApprovedError)
+    expect { use_case.run(request) }.to raise_error(Order::RejectedOrderCannotBeApprovedError)
   end
 
   it 'cannot reject approved order' do
@@ -55,7 +55,7 @@ RSpec.describe OrderApprovalUseCase do
 
     request.approved = false
 
-    expect { use_case.run(request) }.to raise_error(described_class::ApprovedOrderCannotBeRejectedError)
+    expect { use_case.run(request) }.to raise_error(Order::ApprovedOrderCannotBeRejectedError)
   end
 
   it 'cannot approve shipepd orders' do
@@ -63,7 +63,7 @@ RSpec.describe OrderApprovalUseCase do
 
     request.approved = true
 
-    expect { use_case.run(request) }.to raise_error(described_class::ShippedOrdersCannotBeChangedError)
+    expect { use_case.run(request) }.to raise_error(Order::ShippedOrdersCannotBeChangedError)
   end
 
   it 'cannot reject shipped orders' do
@@ -71,6 +71,6 @@ RSpec.describe OrderApprovalUseCase do
 
     request.approved = true
 
-    expect { use_case.run(request) }.to raise_error(described_class::ShippedOrdersCannotBeChangedError)
+    expect { use_case.run(request) }.to raise_error(Order::ShippedOrdersCannotBeChangedError)
   end
 end

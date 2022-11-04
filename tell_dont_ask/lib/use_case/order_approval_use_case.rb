@@ -15,13 +15,11 @@ class OrderApprovalUseCase
   def run(request)
     order = @order_repository.get_by_id(request.order_id)
 
-    raise ShippedOrdersCannotBeChangedError if order.status == OrderStatus::SHIPPED
-
-    raise RejectedOrderCannotBeApprovedError if request.approved && order.status == OrderStatus::REJECTED
-
-    raise ApprovedOrderCannotBeRejectedError if !request.approved && order.status == OrderStatus::APPROVED
-
-    order.status = request.approved ? OrderStatus::APPROVED : OrderStatus::REJECTED
+    if request.approved
+      order.approve!
+    else
+      order.reject!
+    end
 
     @order_repository.save(order)
   end
