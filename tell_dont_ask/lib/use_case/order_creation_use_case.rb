@@ -27,13 +27,14 @@ class OrderCreationUseCase
       taxed_amount = (unitary_taxed_amount * item_request.quantity).ceil(2)
       tax_amount = (unitary_tax * item_request.quantity).ceil(2)
 
-      order_item = OrderItem.new
-      order_item.product = product
-      order_item.quantity = item_request.quantity
-      order_item.tax = tax_amount
-      order_item.taxed_amount = taxed_amount
+      order_item = OrderItem.new(
+        product: product,
+        quantity: item_request.quantity,
+        taxed_amount: taxed_amount,
+        tax: tax_amount
+      )
 
-      order.items << order_item
+      order.add_item(order_item)
       order.total += taxed_amount
       order.tax += tax_amount
     end
