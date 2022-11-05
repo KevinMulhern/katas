@@ -1,16 +1,17 @@
 require_relative 'player'
+require_relative 'player_collection'
+
 
 module UglyTrivia
   class Game
     def  initialize
-      @players = []
+      @players = PlayerCollection.new
 
       @pop_questions = []
       @science_questions = []
       @sports_questions = []
       @rock_questions = []
 
-      @current_player = 0
       @is_getting_out_of_penalty_box = false
 
       50.times do |i|
@@ -22,12 +23,7 @@ module UglyTrivia
     end
 
     def add(player_name)
-      @players.push Player.new(player_name)
-
-      puts "#{player_name} was added"
-      puts "They are player number #{@players.length}"
-
-      true
+      @players.add(player_name)
     end
 
     def roll(roll)
@@ -49,13 +45,11 @@ module UglyTrivia
           puts "#{current_player} now has #{current_player.purse} Gold Coins."
 
           winner = did_player_win()
-          @current_player += 1
-          @current_player = 0 if @current_player == @players.length
+          switch_players
 
           winner
         else
-          @current_player += 1
-          @current_player = 0 if @current_player == @players.length
+          switch_players
           true
         end
       else
@@ -65,8 +59,7 @@ module UglyTrivia
         puts "#{current_player} now has #{current_player.purse} Gold Coins."
 
         winner = did_player_win
-        @current_player += 1
-        @current_player = 0 if @current_player == @players.length
+        switch_players
 
         return winner
       end
@@ -77,12 +70,13 @@ module UglyTrivia
       puts "#{current_player} was sent to the penalty box"
       current_player.send_to_penalty_box
 
-      @current_player += 1
-      @current_player = 0 if @current_player == @players.length
+      switch_players
       return true
     end
 
     private
+
+    attr_reader :players
 
     def handle_player_in_penalty_box(roll)
       if roll.odd?
@@ -94,8 +88,8 @@ module UglyTrivia
 
     def handle_player_not_in_penalty_box(roll)
       current_player.update_location(roll)
-
       puts "#{current_player}'s new location is #{current_player.location}"
+
       puts "The category is #{current_category}"
       ask_question
     end
@@ -104,9 +98,10 @@ module UglyTrivia
       @is_getting_out_of_penalty_box = true
 
       puts "#{current_player} is getting out of the penalty box"
-      current_player.update_location(roll)
 
+      current_player.update_location(roll)
       puts "#{current_player}'s new location is #{current_player.location}"
+
       puts "The category is #{current_category}"
       ask_question
     end
@@ -125,13 +120,13 @@ module UglyTrivia
 
     def current_category
       return 'Pop' if current_player.location == 0
-      return 'Pop' if current_player.location == 4
-      return 'Pop' if current_player.location == 8
       return 'Science' if current_player.location == 1
-      return 'Science' if current_player.location == 5
-      return 'Science' if current_player.location == 9
       return 'Sports' if current_player.location == 2
+      return 'Pop' if current_player.location == 4
+      return 'Science' if current_player.location == 5
       return 'Sports' if current_player.location == 6
+      return 'Pop' if current_player.location == 8
+      return 'Science' if current_player.location == 9
       return 'Sports' if current_player.location == 10
       return 'Rock'
     end
@@ -141,7 +136,11 @@ module UglyTrivia
     end
 
     def current_player
-      @players[@current_player]
+      @players.current_player
+    end
+
+    def switch_players
+      @players.switch_players
     end
   end
 end
