@@ -5,7 +5,6 @@ module UglyTrivia
     def  initialize
       @players = []
       @places = Array.new(6, 0)
-      @in_penalty_box = Array.new(6, nil)
 
       @pop_questions = []
       @science_questions = []
@@ -26,7 +25,6 @@ module UglyTrivia
     def add(player_name)
       @players.push Player.new(player_name)
       @places[@players.length] = 0
-      @in_penalty_box[@players.length] = false
 
       puts "#{player_name} was added"
       puts "They are player number #{@players.length}"
@@ -38,7 +36,7 @@ module UglyTrivia
       puts "#{current_player} is the current player"
       puts "They have rolled a #{roll}"
 
-      if @in_penalty_box[@current_player]
+      if current_player.in_penalty_box
         handle_player_in_penalty_box(roll)
       else
         handle_player_not_in_penalty_box(roll)
@@ -46,7 +44,7 @@ module UglyTrivia
     end
 
     def was_correctly_answered
-      if @in_penalty_box[@current_player]
+      if current_player.in_penalty_box
         if @is_getting_out_of_penalty_box
           puts 'Answer was correct!!!!'
           current_player.add_coin
@@ -79,7 +77,7 @@ module UglyTrivia
     def wrong_answer
       puts 'Question was incorrectly answered'
       puts "#{current_player} was sent to the penalty box"
-      @in_penalty_box[@current_player] = true
+      current_player.send_to_penalty_box
 
       @current_player += 1
       @current_player = 0 if @current_player == @players.length
