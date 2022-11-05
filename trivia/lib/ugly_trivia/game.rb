@@ -5,7 +5,6 @@ module UglyTrivia
     def  initialize
       @players = []
       @places = Array.new(6, 0)
-      @purses = Array.new(6, 0)
       @in_penalty_box = Array.new(6, nil)
 
       @pop_questions = []
@@ -27,7 +26,6 @@ module UglyTrivia
     def add(player_name)
       @players.push Player.new(player_name)
       @places[@players.length] = 0
-      @purses[@players.length] = 0
       @in_penalty_box[@players.length] = false
 
       puts "#{player_name} was added"
@@ -51,8 +49,8 @@ module UglyTrivia
       if @in_penalty_box[@current_player]
         if @is_getting_out_of_penalty_box
           puts 'Answer was correct!!!!'
-          @purses[@current_player] += 1
-          puts "#{current_player} now has #{@purses[@current_player]} Gold Coins."
+          current_player.add_coin
+          puts "#{current_player} now has #{current_player.purse} Gold Coins."
 
           winner = did_player_win()
           @current_player += 1
@@ -67,8 +65,8 @@ module UglyTrivia
       else
 
         puts "Answer was corrent!!!!"
-        @purses[@current_player] += 1
-        puts "#{current_player} now has #{@purses[@current_player]} Gold Coins."
+        current_player.add_coin
+        puts "#{current_player} now has #{current_player.purse} Gold Coins."
 
         winner = did_player_win
         @current_player += 1
@@ -145,7 +143,7 @@ module UglyTrivia
     end
 
     def did_player_win
-      !(@purses[@current_player] == 6)
+      current_player.purse != 6
     end
 
     def current_player
