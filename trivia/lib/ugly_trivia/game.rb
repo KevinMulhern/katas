@@ -1,3 +1,5 @@
+require_relative 'player'
+
 module UglyTrivia
   class Game
     def  initialize
@@ -23,7 +25,7 @@ module UglyTrivia
     end
 
     def add(player_name)
-      @players.push player_name
+      @players.push Player.new(player_name)
       @places[@players.length] = 0
       @purses[@players.length] = 0
       @in_penalty_box[@players.length] = false
@@ -35,7 +37,7 @@ module UglyTrivia
     end
 
     def roll(roll)
-      puts "#{@players[@current_player]} is the current player"
+      puts "#{current_player} is the current player"
       puts "They have rolled a #{roll}"
 
       if @in_penalty_box[@current_player]
@@ -50,7 +52,7 @@ module UglyTrivia
         if @is_getting_out_of_penalty_box
           puts 'Answer was correct!!!!'
           @purses[@current_player] += 1
-          puts "#{@players[@current_player]} now has #{@purses[@current_player]} Gold Coins."
+          puts "#{current_player} now has #{@purses[@current_player]} Gold Coins."
 
           winner = did_player_win()
           @current_player += 1
@@ -62,14 +64,11 @@ module UglyTrivia
           @current_player = 0 if @current_player == @players.length
           true
         end
-
-
-
       else
 
         puts "Answer was corrent!!!!"
         @purses[@current_player] += 1
-        puts "#{@players[@current_player]} now has #{@purses[@current_player]} Gold Coins."
+        puts "#{current_player} now has #{@purses[@current_player]} Gold Coins."
 
         winner = did_player_win
         @current_player += 1
@@ -81,7 +80,7 @@ module UglyTrivia
 
     def wrong_answer
       puts 'Question was incorrectly answered'
-      puts "#{@players[@current_player]} was sent to the penalty box"
+      puts "#{current_player} was sent to the penalty box"
       @in_penalty_box[@current_player] = true
 
       @current_player += 1
@@ -95,7 +94,7 @@ module UglyTrivia
       if roll.odd?
         handle_odd_roll(roll)
       else
-      handle_even_roll(roll)
+        handle_even_roll(roll)
       end
     end
 
@@ -103,7 +102,7 @@ module UglyTrivia
       @places[@current_player] = @places[@current_player] + roll
       @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
 
-      puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+      puts "#{current_player}'s new location is #{@places[@current_player]}"
       puts "The category is #{current_category}"
       ask_question
     end
@@ -111,17 +110,17 @@ module UglyTrivia
     def handle_odd_roll(roll)
       @is_getting_out_of_penalty_box = true
 
-      puts "#{@players[@current_player]} is getting out of the penalty box"
+      puts "#{current_player} is getting out of the penalty box"
       @places[@current_player] = @places[@current_player] + roll
       @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
 
-      puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+      puts "#{current_player}'s new location is #{@places[@current_player]}"
       puts "The category is #{current_category}"
       ask_question
     end
 
     def handle_even_roll(roll)
-      puts "#{@players[@current_player]} is not getting out of the penalty box"
+      puts "#{current_player} is not getting out of the penalty box"
       @is_getting_out_of_penalty_box = false
     end
 
@@ -147,6 +146,10 @@ module UglyTrivia
 
     def did_player_win
       !(@purses[@current_player] == 6)
+    end
+
+    def current_player
+      @players[@current_player]
     end
   end
 end
