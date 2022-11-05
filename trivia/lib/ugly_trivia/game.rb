@@ -18,32 +18,20 @@ module UglyTrivia
         @pop_questions.push "Pop Question #{i}"
         @science_questions.push "Science Question #{i}"
         @sports_questions.push "Sports Question #{i}"
-        @rock_questions.push create_rock_question(i)
+        @rock_questions.push "Rock Question #{i}"
       end
-    end
-
-    def create_rock_question(index)
-      "Rock Question #{index}"
-    end
-
-    def is_playable?
-      how_many_players >= 2
     end
 
     def add(player_name)
       @players.push player_name
-      @places[how_many_players] = 0
-      @purses[how_many_players] = 0
-      @in_penalty_box[how_many_players] = false
+      @places[@players.length] = 0
+      @purses[@players.length] = 0
+      @in_penalty_box[@players.length] = false
 
       puts "#{player_name} was added"
       puts "They are player number #{@players.length}"
 
       true
-    end
-
-    def how_many_players
-      @players.length
     end
 
     def roll(roll)
@@ -56,64 +44,6 @@ module UglyTrivia
         handle_player_not_in_penalty_box(roll)
       end
     end
-
-  private
-
-  def handle_player_in_penalty_box(roll)
-    if roll.odd?
-      handle_odd_roll(roll)
-    else
-     handle_even_roll(roll)
-    end
-  end
-
-  def handle_player_not_in_penalty_box(roll)
-    @places[@current_player] = @places[@current_player] + roll
-    @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
-
-    puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
-    puts "The category is #{current_category}"
-    ask_question
-  end
-
-  def handle_odd_roll(roll)
-    @is_getting_out_of_penalty_box = true
-
-    puts "#{@players[@current_player]} is getting out of the penalty box"
-    @places[@current_player] = @places[@current_player] + roll
-    @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
-
-    puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
-    puts "The category is #{current_category}"
-    ask_question
-  end
-
-  def handle_even_roll(roll)
-    puts "#{@players[@current_player]} is not getting out of the penalty box"
-    @is_getting_out_of_penalty_box = false
-  end
-
-    def ask_question
-      puts @pop_questions.shift if current_category == 'Pop'
-      puts @science_questions.shift if current_category == 'Science'
-      puts @sports_questions.shift if current_category == 'Sports'
-      puts @rock_questions.shift if current_category == 'Rock'
-    end
-
-    def current_category
-      return 'Pop' if @places[@current_player] == 0
-      return 'Pop' if @places[@current_player] == 4
-      return 'Pop' if @places[@current_player] == 8
-      return 'Science' if @places[@current_player] == 1
-      return 'Science' if @places[@current_player] == 5
-      return 'Science' if @places[@current_player] == 9
-      return 'Sports' if @places[@current_player] == 2
-      return 'Sports' if @places[@current_player] == 6
-      return 'Sports' if @places[@current_player] == 10
-      return 'Rock'
-    end
-
-  public
 
     def was_correctly_answered
       if @in_penalty_box[@current_player]
@@ -150,16 +80,70 @@ module UglyTrivia
     end
 
     def wrong_answer
-  		puts 'Question was incorrectly answered'
-  		puts "#{@players[@current_player]} was sent to the penalty box"
-  		@in_penalty_box[@current_player] = true
+      puts 'Question was incorrectly answered'
+      puts "#{@players[@current_player]} was sent to the penalty box"
+      @in_penalty_box[@current_player] = true
 
       @current_player += 1
       @current_player = 0 if @current_player == @players.length
-  		return true
+      return true
     end
 
-  private
+    private
+
+    def handle_player_in_penalty_box(roll)
+      if roll.odd?
+        handle_odd_roll(roll)
+      else
+      handle_even_roll(roll)
+      end
+    end
+
+    def handle_player_not_in_penalty_box(roll)
+      @places[@current_player] = @places[@current_player] + roll
+      @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+
+      puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+      puts "The category is #{current_category}"
+      ask_question
+    end
+
+    def handle_odd_roll(roll)
+      @is_getting_out_of_penalty_box = true
+
+      puts "#{@players[@current_player]} is getting out of the penalty box"
+      @places[@current_player] = @places[@current_player] + roll
+      @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+
+      puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+      puts "The category is #{current_category}"
+      ask_question
+    end
+
+    def handle_even_roll(roll)
+      puts "#{@players[@current_player]} is not getting out of the penalty box"
+      @is_getting_out_of_penalty_box = false
+    end
+
+    def ask_question
+      puts @pop_questions.shift if current_category == 'Pop'
+      puts @science_questions.shift if current_category == 'Science'
+      puts @sports_questions.shift if current_category == 'Sports'
+      puts @rock_questions.shift if current_category == 'Rock'
+    end
+
+    def current_category
+      return 'Pop' if @places[@current_player] == 0
+      return 'Pop' if @places[@current_player] == 4
+      return 'Pop' if @places[@current_player] == 8
+      return 'Science' if @places[@current_player] == 1
+      return 'Science' if @places[@current_player] == 5
+      return 'Science' if @places[@current_player] == 9
+      return 'Sports' if @places[@current_player] == 2
+      return 'Sports' if @places[@current_player] == 6
+      return 'Sports' if @places[@current_player] == 10
+      return 'Rock'
+    end
 
     def did_player_win
       !(@purses[@current_player] == 6)
