@@ -51,33 +51,47 @@ module UglyTrivia
       puts "They have rolled a #{roll}"
 
       if @in_penalty_box[@current_player]
-        if roll % 2 != 0
-          @is_getting_out_of_penalty_box = true
-
-          puts "#{@players[@current_player]} is getting out of the penalty box"
-          @places[@current_player] = @places[@current_player] + roll
-          @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
-
-          puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
-          puts "The category is #{current_category}"
-          ask_question
-        else
-          puts "#{@players[@current_player]} is not getting out of the penalty box"
-          @is_getting_out_of_penalty_box = false
-          end
-
+        handle_player_in_penalty_box(roll)
       else
-
-        @places[@current_player] = @places[@current_player] + roll
-        @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
-
-        puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
-        puts "The category is #{current_category}"
-        ask_question
+        handle_player_not_in_penalty_box(roll)
       end
     end
 
   private
+
+  def handle_player_in_penalty_box(roll)
+    if roll.odd?
+      handle_odd_roll(roll)
+    else
+     handle_even_roll(roll)
+    end
+  end
+
+  def handle_player_not_in_penalty_box(roll)
+    @places[@current_player] = @places[@current_player] + roll
+    @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+
+    puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+    puts "The category is #{current_category}"
+    ask_question
+  end
+
+  def handle_odd_roll(roll)
+    @is_getting_out_of_penalty_box = true
+
+    puts "#{@players[@current_player]} is getting out of the penalty box"
+    @places[@current_player] = @places[@current_player] + roll
+    @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+
+    puts "#{@players[@current_player]}'s new location is #{@places[@current_player]}"
+    puts "The category is #{current_category}"
+    ask_question
+  end
+
+  def handle_even_roll(roll)
+    puts "#{@players[@current_player]} is not getting out of the penalty box"
+    @is_getting_out_of_penalty_box = false
+  end
 
     def ask_question
       puts @pop_questions.shift if current_category == 'Pop'
