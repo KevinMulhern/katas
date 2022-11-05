@@ -1,11 +1,12 @@
 module UglyTrivia
   class Player
-    attr_reader :name, :purse, :in_penalty_box
+    attr_reader :name, :purse, :in_penalty_box, :location
 
     def initialize(name)
       @name = name
       @purse = 0
       @in_penalty_box = false
+      @location = 0
     end
 
     def to_s
@@ -18,6 +19,10 @@ module UglyTrivia
 
     def send_to_penalty_box
       @in_penalty_box = true
+    end
+
+    def update_location(roll)
+      @location = (@location + roll) % 12
     end
 
   end

@@ -4,7 +4,6 @@ module UglyTrivia
   class Game
     def  initialize
       @players = []
-      @places = Array.new(6, 0)
 
       @pop_questions = []
       @science_questions = []
@@ -24,7 +23,6 @@ module UglyTrivia
 
     def add(player_name)
       @players.push Player.new(player_name)
-      @places[@players.length] = 0
 
       puts "#{player_name} was added"
       puts "They are player number #{@players.length}"
@@ -95,10 +93,9 @@ module UglyTrivia
     end
 
     def handle_player_not_in_penalty_box(roll)
-      @places[@current_player] = @places[@current_player] + roll
-      @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+      current_player.update_location(roll)
 
-      puts "#{current_player}'s new location is #{@places[@current_player]}"
+      puts "#{current_player}'s new location is #{current_player.location}"
       puts "The category is #{current_category}"
       ask_question
     end
@@ -107,10 +104,9 @@ module UglyTrivia
       @is_getting_out_of_penalty_box = true
 
       puts "#{current_player} is getting out of the penalty box"
-      @places[@current_player] = @places[@current_player] + roll
-      @places[@current_player] = @places[@current_player] - 12 if @places[@current_player] > 11
+      current_player.update_location(roll)
 
-      puts "#{current_player}'s new location is #{@places[@current_player]}"
+      puts "#{current_player}'s new location is #{current_player.location}"
       puts "The category is #{current_category}"
       ask_question
     end
@@ -128,15 +124,15 @@ module UglyTrivia
     end
 
     def current_category
-      return 'Pop' if @places[@current_player] == 0
-      return 'Pop' if @places[@current_player] == 4
-      return 'Pop' if @places[@current_player] == 8
-      return 'Science' if @places[@current_player] == 1
-      return 'Science' if @places[@current_player] == 5
-      return 'Science' if @places[@current_player] == 9
-      return 'Sports' if @places[@current_player] == 2
-      return 'Sports' if @places[@current_player] == 6
-      return 'Sports' if @places[@current_player] == 10
+      return 'Pop' if current_player.location == 0
+      return 'Pop' if current_player.location == 4
+      return 'Pop' if current_player.location == 8
+      return 'Science' if current_player.location == 1
+      return 'Science' if current_player.location == 5
+      return 'Science' if current_player.location == 9
+      return 'Sports' if current_player.location == 2
+      return 'Sports' if current_player.location == 6
+      return 'Sports' if current_player.location == 10
       return 'Rock'
     end
 
