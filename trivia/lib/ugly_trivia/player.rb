@@ -15,6 +15,11 @@ module UglyTrivia
 
     def add_coin
       @purse += 1
+      puts "#{name} now has #{purse} Gold Coins."
+    end
+
+    def winner?
+      purse == 6
     end
 
     def send_to_penalty_box

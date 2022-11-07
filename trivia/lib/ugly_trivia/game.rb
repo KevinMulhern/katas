@@ -18,7 +18,9 @@ module UglyTrivia
       puts "They have rolled a #{roll}"
 
       if current_player.in_penalty_box
-        roll.even? ? handle_even_roll(roll) : handle_odd_roll(roll)
+        remove_from_penalty_box(roll) if roll.odd?
+
+        puts "#{current_player} is not getting out of the penalty box" if roll.even?
       else
         current_player.update_location(roll)
 
@@ -32,12 +34,11 @@ module UglyTrivia
       else
         puts "Answer was corrent!!!!"
         current_player.add_coin
-        puts "#{current_player} now has #{current_player.purse} Gold Coins."
 
         winner = did_player_win
         switch_players
 
-        return winner
+        winner
       end
     end
 
@@ -53,17 +54,13 @@ module UglyTrivia
 
     attr_reader :players
 
-    def handle_odd_roll(roll)
+    def remove_from_penalty_box(roll)
       puts "#{current_player} is getting out of the penalty box"
       current_player.remove_from_penalty_box!
 
       current_player.update_location(roll)
 
       ask_question
-    end
-
-    def handle_even_roll(roll)
-      puts "#{current_player} is not getting out of the penalty box"
     end
 
     def ask_question
