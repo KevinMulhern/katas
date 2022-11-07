@@ -21,8 +21,13 @@ module UglyTrivia
       @in_penalty_box = true
     end
 
+    def remove_from_penalty_box!
+      @in_penalty_box = false
+    end
+
     def update_location(roll)
       @location = (@location + roll) % 12
+      puts "#{name}'s new location is #{location}"
     end
 
   end

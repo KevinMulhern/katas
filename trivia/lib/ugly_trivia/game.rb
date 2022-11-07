@@ -7,8 +7,6 @@ module UglyTrivia
     def  initialize
       @players = PlayerCollection.new
       @questions = QuestionCollection.new(categories: ['Pop', 'Science', 'Sports', 'Rock'], size: 50)
-
-      @is_getting_out_of_penalty_box = false
     end
 
     def add(player_name)
@@ -20,29 +18,18 @@ module UglyTrivia
       puts "They have rolled a #{roll}"
 
       if current_player.in_penalty_box
-        handle_player_in_penalty_box(roll)
+        roll.even? ? handle_even_roll(roll) : handle_odd_roll(roll)
       else
-        handle_player_not_in_penalty_box(roll)
+        current_player.update_location(roll)
+
+        ask_question
       end
     end
 
     def was_correctly_answered
       if current_player.in_penalty_box
-        if @is_getting_out_of_penalty_box
-          puts 'Answer was correct!!!!'
-          current_player.add_coin
-          puts "#{current_player} now has #{current_player.purse} Gold Coins."
-
-          winner = did_player_win()
-          switch_players
-
-          winner
-        else
-          switch_players
-          true
-        end
+        switch_players
       else
-
         puts "Answer was corrent!!!!"
         current_player.add_coin
         puts "#{current_player} now has #{current_player.purse} Gold Coins."
@@ -60,42 +47,23 @@ module UglyTrivia
       current_player.send_to_penalty_box
 
       switch_players
-      return true
     end
 
     private
 
     attr_reader :players
 
-    def handle_player_in_penalty_box(roll)
-      if roll.odd?
-        handle_odd_roll(roll)
-      else
-        handle_even_roll(roll)
-      end
-    end
-
-    def handle_player_not_in_penalty_box(roll)
-      current_player.update_location(roll)
-      puts "#{current_player}'s new location is #{current_player.location}"
-
-      ask_question
-    end
-
     def handle_odd_roll(roll)
-      @is_getting_out_of_penalty_box = true
-
       puts "#{current_player} is getting out of the penalty box"
+      current_player.remove_from_penalty_box!
 
       current_player.update_location(roll)
-      puts "#{current_player}'s new location is #{current_player.location}"
 
       ask_question
     end
 
     def handle_even_roll(roll)
       puts "#{current_player} is not getting out of the penalty box"
-      @is_getting_out_of_penalty_box = false
     end
 
     def ask_question
