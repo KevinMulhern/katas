@@ -1,25 +1,14 @@
 require_relative 'player'
 require_relative 'player_collection'
-
+require_relative 'question_collection'
 
 module UglyTrivia
   class Game
     def  initialize
       @players = PlayerCollection.new
-
-      @pop_questions = []
-      @science_questions = []
-      @sports_questions = []
-      @rock_questions = []
+      @questions = QuestionCollection.new(categories: ['Pop', 'Science', 'Sports', 'Rock'], size: 50)
 
       @is_getting_out_of_penalty_box = false
-
-      50.times do |i|
-        @pop_questions.push "Pop Question #{i}"
-        @science_questions.push "Science Question #{i}"
-        @sports_questions.push "Sports Question #{i}"
-        @rock_questions.push "Rock Question #{i}"
-      end
     end
 
     def add(player_name)
@@ -90,7 +79,6 @@ module UglyTrivia
       current_player.update_location(roll)
       puts "#{current_player}'s new location is #{current_player.location}"
 
-      puts "The category is #{current_category}"
       ask_question
     end
 
@@ -102,7 +90,6 @@ module UglyTrivia
       current_player.update_location(roll)
       puts "#{current_player}'s new location is #{current_player.location}"
 
-      puts "The category is #{current_category}"
       ask_question
     end
 
@@ -112,23 +99,12 @@ module UglyTrivia
     end
 
     def ask_question
-      puts @pop_questions.shift if current_category == 'Pop'
-      puts @science_questions.shift if current_category == 'Science'
-      puts @sports_questions.shift if current_category == 'Sports'
-      puts @rock_questions.shift if current_category == 'Rock'
+      puts "The category is #{current_category}"
+      puts @questions.next_question_for(current_player.location)
     end
 
     def current_category
-      return 'Pop' if current_player.location == 0
-      return 'Science' if current_player.location == 1
-      return 'Sports' if current_player.location == 2
-      return 'Pop' if current_player.location == 4
-      return 'Science' if current_player.location == 5
-      return 'Sports' if current_player.location == 6
-      return 'Pop' if current_player.location == 8
-      return 'Science' if current_player.location == 9
-      return 'Sports' if current_player.location == 10
-      return 'Rock'
+      @questions.category_for(current_player.location)
     end
 
     def did_player_win
